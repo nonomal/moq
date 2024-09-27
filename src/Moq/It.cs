@@ -61,27 +61,6 @@ namespace Moq
                 return Match.Create<TValue>(
                      argument => argument == null || argument is TValue,
                     () => It.IsAny<TValue>());
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                After:
-                        static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                After:
-                        static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                After:
-                        static readonly MethodInfo isAnyMethod = typeof(It).GetMethod(nameof(It.IsAny), BindingFlags.Public | BindingFlags.Static);
-                */
             }
         }
 
@@ -165,9 +144,10 @@ namespace Moq
             }
 
             var thisMethod = (MethodInfo)MethodBase.GetCurrentMethod();
+            var compiledMatchMethod = match.CompileUsingExpressionCompiler();
 
             return Match.Create<TValue>(
-                argument => match.CompileUsingExpressionCompiler().Invoke(argument),
+                argument => compiledMatchMethod.Invoke(argument),
                 Expression.Lambda<Func<TValue>>(Expression.Call(thisMethod.MakeGenericMethod(typeof(TValue)), match)));
         }
 
@@ -188,9 +168,10 @@ namespace Moq
         public static TValue Is<TValue>(Expression<Func<object, Type, bool>> match)
         {
             var thisMethod = (MethodInfo)MethodBase.GetCurrentMethod();
+            var compiledMatchMethod = match.CompileUsingExpressionCompiler();
 
             return Match.Create<TValue>(
-                (argument, parameterType) => match.CompileUsingExpressionCompiler().Invoke(argument, parameterType),
+                (argument, parameterType) => compiledMatchMethod.Invoke(argument, parameterType),
                 Expression.Lambda<Func<TValue>>(Expression.Call(thisMethod.MakeGenericMethod(typeof(TValue)), match)));
         }
 

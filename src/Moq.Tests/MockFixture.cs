@@ -217,13 +217,6 @@ namespace Moq.Tests
             mock.Setup(x => x.Echo(GetValue(value))).Returns(() => value * 2);
 
             Assert.Equal(value * 2, mock.Object.Echo(value * 2));
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                    private int GetValue(int value)
-            After:
-                    int GetValue(int value)
-            */
         }
 
         int GetValue(int value)
@@ -761,13 +754,6 @@ namespace Moq.Tests
             Assert.Equal(2, mock.Object.Echo(8));
             Assert.Equal(3, mock.Object.Echo(9));
             Assert.Equal(3, mock.Object.Echo(3));
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                    private int IsMultipleOf(int value)
-            After:
-                    int IsMultipleOf(int value)
-            */
         }
 
         int IsMultipleOf(int value)
@@ -1012,12 +998,21 @@ namespace Moq.Tests
             target.VerifyAll();
         }
 
+#nullable enable
         [Fact]
         public void ArgumentNullMatchProperCtor()
         {
             var target = new Mock<Foo>(null);
             Assert.Null(target.Object.Bar);
         }
+
+        [Fact]
+        public void ParamsArrayContainsNullMatchProperCtor()
+        {
+            var target = new Mock<Foo>(new Bar?[] { null });
+            Assert.Null(target.Object.Bar);
+        }
+#nullable disable
 
         [Fact]
         public void DistinguishesSameMethodsWithDifferentGenericArguments()
@@ -1043,13 +1038,6 @@ namespace Moq.Tests
             var foo = MakeFoo(mock);
             Assert.Equal("bar", foo.Bar.Value);
             mock.Verify(x => x.Value, Times.Once());
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                    private static Foo MakeFoo(IMock<IBar> barMock)
-            After:
-                    static Foo MakeFoo(IMock<IBar> barMock)
-            */
         }
 
         static Foo MakeFoo(IMock<IBar> barMock)

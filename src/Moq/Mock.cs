@@ -3,13 +3,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-
+using Moq;
 using Moq.Async;
 using Moq.Properties;
 
@@ -372,27 +373,6 @@ namespace Moq
         internal static void VerifyNoOtherCalls(Mock mock)
         {
             Mock.VerifyNoOtherCalls(mock, verifiedMocks: new HashSet<Mock>());
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            After:
-                    static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            After:
-                    static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            After:
-                    static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
-            */
         }
 
         static void VerifyNoOtherCalls(Mock mock, HashSet<Mock> verifiedMocks)
@@ -439,27 +419,6 @@ namespace Moq
             foreach (var innerMock in innerMocks)
             {
                 VerifyNoOtherCalls(innerMock, verifiedMocks);
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private static int GetMatchingInvocationCount(
-                After:
-                        static int GetMatchingInvocationCount(
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private static int GetMatchingInvocationCount(
-                After:
-                        static int GetMatchingInvocationCount(
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private static int GetMatchingInvocationCount(
-                After:
-                        static int GetMatchingInvocationCount(
-                */
             }
         }
 
@@ -477,27 +436,6 @@ namespace Moq
                 new ImmutablePopOnlyStack<MethodExpectation>(expression.Split()),
                 new HashSet<Mock>(),
                 invocationsToBeMarkedAsVerified);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static int GetMatchingInvocationCount(
-            After:
-                    static int GetMatchingInvocationCount(
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static int GetMatchingInvocationCount(
-            After:
-                    static int GetMatchingInvocationCount(
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static int GetMatchingInvocationCount(
-            After:
-                    static int GetMatchingInvocationCount(
-            */
         }
 
         static int GetMatchingInvocationCount(
@@ -695,27 +633,6 @@ namespace Moq
                 targetMock.MutableSetups.Add(setup);
                 return setup;
             });
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
-            */
         }
 
         static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression expression, Func<Mock, Expression, MethodExpectation, TSetup> setupLast, bool allowNonOverridableLastProperty = false)
@@ -727,27 +644,6 @@ namespace Moq
 
             var parts = expression.Split(allowNonOverridableLastProperty);
             return Mock.SetupRecursive(mock, originalExpression: expression, parts, setupLast);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            After:
-                    static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)
-            */
         }
 
         static TSetup SetupRecursive<TSetup>(Mock mock, LambdaExpression originalExpression, Stack<MethodExpectation> parts, Func<Mock, Expression, MethodExpectation, TSetup> setupLast)

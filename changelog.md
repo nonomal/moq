@@ -1,5 +1,42 @@
 # Changelog
 
+## [v4.20.72](https://github.com/devlooped/moq/tree/v4.20.72) (2024-09-07)
+
+[Full Changelog](https://github.com/devlooped/moq/compare/v4.20.71...v4.20.72)
+
+:hammer: Other:
+
+- Question: Sponsorable Attribute in release v4.20.71 [\#1513](https://github.com/devlooped/moq/issues/1513)
+
+:twisted_rightwards_arrows: Merged:
+
+- Remove unused attribute [\#1515](https://github.com/devlooped/moq/pull/1515) (@kzu)
+
+## [v4.20.71](https://github.com/devlooped/moq/tree/v4.20.71) (2024-09-03)
+
+[Full Changelog](https://github.com/devlooped/moq/compare/v4.20.70...v4.20.71)
+
+:bug: Fixed bugs:
+
+- Documentation link gives 404 [\#1495](https://github.com/devlooped/moq/issues/1495)
+- Documentation link is broken [\#1487](https://github.com/devlooped/moq/issues/1487)
+
+:hammer: Other:
+
+- Documentation Unavailable Online [\#1473](https://github.com/devlooped/moq/issues/1473)
+- Some source code files is filled with comments like: "Unmerged change from project " [\#1451](https://github.com/devlooped/moq/issues/1451)
+- Question: would it make sense to call verify all on a strict mock when the mock gets disposed? [\#1440](https://github.com/devlooped/moq/issues/1440)
+- SponsorLink Integration Makes Moq Unuasable due to PII and GDPR Requirements [\#1433](https://github.com/devlooped/moq/issues/1433)
+- Default value ILookup\<\> in loose mode is `null` [\#1391](https://github.com/devlooped/moq/issues/1391)
+- Verifying a protected method when the exact parameter types are not statically known [\#1339](https://github.com/devlooped/moq/issues/1339)
+
+:twisted_rightwards_arrows: Merged:
+
+- Remove spurious unmerged change comment from dotnet format [\#1499](https://github.com/devlooped/moq/pull/1499) (@kzu)
+- Fix semantic error in MatchersFixture.cs test [\#1496](https://github.com/devlooped/moq/pull/1496) (@go-hoon)
+- Update License.txt to use SPDX identifier for automatic recognition [\#1471](https://github.com/devlooped/moq/pull/1471) (@georg-eckert-zeiss)
+- Additional Verify overload [\#1463](https://github.com/devlooped/moq/pull/1463) (@bkijonka)
+
 ## [v4.20.70](https://github.com/devlooped/moq/tree/v4.20.70) (2023-11-28)
 
 [Full Changelog](https://github.com/devlooped/moq/compare/v4.20.69...v4.20.70)
@@ -7,12 +44,10 @@
 :hammer: Other:
 
 - a minor changes to improve the readability [\#1419](https://github.com/devlooped/moq/issues/1419)
-- Poll on SponsorLink [\#1415](https://github.com/devlooped/moq/issues/1415)
 - Change log is not updated since version 4.18.4 [\#1406](https://github.com/devlooped/moq/issues/1406)
 - Stop using Moq as a guinea pig to get feedback on and develop SponsorLink [\#1396](https://github.com/devlooped/moq/issues/1396)
 - Permanently delete all data from SponsorLink's database that has been collected during builds that included Moq \(notably any version 4.20.\*\) [\#1395](https://github.com/devlooped/moq/issues/1395)
 - SponsorLink is now OSS too and no longer bundled [\#1384](https://github.com/devlooped/moq/issues/1384)
-- SponsorLink and supporting OSS more broadly [\#1374](https://github.com/devlooped/moq/issues/1374)
 - Performance issue with large interfaces [\#1350](https://github.com/devlooped/moq/issues/1350)
 
 :twisted_rightwards_arrows: Merged:
@@ -208,7 +243,6 @@
 :sparkles: Implemented enhancements:
 
 - \[Feature Request\] Allow to change MockBehavior of mocks  [\#1230](https://github.com/devlooped/moq/issues/1230)
-- Make Capture.In\<\>\(\) support System.Collections.Generic.Queue\<\>\(\) [\#1198](https://github.com/devlooped/moq/issues/1198)
 
 :bug: Fixed bugs:
 
@@ -290,7 +324,6 @@
 
 :sparkles: Implemented enhancements:
 
-- Feature - stubbing indexers [\#1178](https://github.com/devlooped/moq/issues/1178)
 - Access invocation arguments when using Throws/ThrowsAsync during Setup [\#1048](https://github.com/devlooped/moq/issues/1048)
 - Enable multi-method setups [\#1203](https://github.com/devlooped/moq/pull/1203) (@stakx)
 
@@ -387,9 +420,7 @@
 
 :sparkles: Implemented enhancements:
 
-- Return matched invocation from `Verify` [\#1117](https://github.com/devlooped/moq/issues/1117)
 - TypeNotMockable Exception [\#1112](https://github.com/devlooped/moq/issues/1112)
-- Easier async setups through a new `Await(...)` operator [\#1007](https://github.com/devlooped/moq/issues/1007)
 - Add ability to set up the `.Result` of \(value\) tasks [\#1126](https://github.com/devlooped/moq/pull/1126) (@stakx)
 
 :bug: Fixed bugs:
@@ -443,7 +474,6 @@
 :hammer: Other:
 
 - Slower performance after upgrading from 4.2.1510 to 4.14.7 [\#1083](https://github.com/devlooped/moq/issues/1083)
-- Remove mandatory SetupAdd & SetupRemove for eventhandler subscription verification. [\#1058](https://github.com/devlooped/moq/issues/1058)
 - Issue comparing Expressions when one value is a constant [\#1054](https://github.com/devlooped/moq/issues/1054)
 - Mock.As behavior change [\#1051](https://github.com/devlooped/moq/issues/1051)
 - Tag Mock.Object as NotNull \(JetBrains.Annotations\) [\#1043](https://github.com/devlooped/moq/issues/1043)
@@ -476,7 +506,6 @@
 
 :sparkles: Implemented enhancements:
 
-- New It.Is overload for matching values using custom IEqualityComparer [\#1059](https://github.com/devlooped/moq/issues/1059)
 - Feature request: Promote Invocation.ReturnValue to IInvocation [\#920](https://github.com/devlooped/moq/issues/920)
 
 :bug: Fixed bugs:
@@ -489,7 +518,6 @@
 :hammer: Other:
 
 - Unable to chain ReturnsAsync with Verifiable [\#1057](https://github.com/devlooped/moq/issues/1057)
-- `mocked.Equals(mocked)` returns false by default if mocked class overrides `Equals` [\#802](https://github.com/devlooped/moq/issues/802)
 
 ## [v4.14.6](https://github.com/devlooped/moq/tree/v4.14.6) (2020-09-30)
 
@@ -688,7 +716,6 @@
 
 - Method without setup not return null [\#897](https://github.com/devlooped/moq/issues/897)
 - Support expression-based mock creation for constructor calls that takes parameters [\#884](https://github.com/devlooped/moq/issues/884)
-- Provide fluent interface [\#833](https://github.com/devlooped/moq/issues/833)
 - Need a way to verify that code added an event handler to an event [\#825](https://github.com/devlooped/moq/issues/825)
 - Invocations.Clear\(\) does not cause Verify to fail. [\#733](https://github.com/devlooped/moq/issues/733)
 - Open Generic Method Callback [\#343](https://github.com/devlooped/moq/issues/343)
@@ -710,7 +737,6 @@
 - Permission to wrap & distribute as a COM library under GPLv3? [\#910](https://github.com/devlooped/moq/issues/910)
 - Check ReturnsAsync method for null arguments. [\#909](https://github.com/devlooped/moq/issues/909)
 - New method matching algorithm introduces behavioral change wrt return types [\#906](https://github.com/devlooped/moq/issues/906)
-- VerifyNoOtherCalls fails due to calls on another Mock instance [\#892](https://github.com/devlooped/moq/issues/892)
 - Feature to reset setups and event handlers? [\#889](https://github.com/devlooped/moq/issues/889)
 - Behavioural change between 4.11 -\> 4.12 with CallBase=True and params args [\#877](https://github.com/devlooped/moq/issues/877)
 - Project with Moq and explicit dependency on higher System.Threading.Tasks.Extension throw exception!! [\#873](https://github.com/devlooped/moq/issues/873)
@@ -767,7 +793,6 @@
 
 - VerifyNoOtherCalls causes stack overflow when mock setup returns the mocked object \(since 4.11\) [\#846](https://github.com/devlooped/moq/issues/846)
 - Breaking Change Moq 4.11 - SetupAllProperties\(\) \(includes Mock.Of\<T\>\) fails in cases it didn't before [\#845](https://github.com/devlooped/moq/issues/845)
-- `SetupAllProperties` no longer overrides pre-existing property setups [\#837](https://github.com/devlooped/moq/issues/837)
 - SetupAllProperties does not setup write-only properties [\#835](https://github.com/devlooped/moq/issues/835)
 
 :hammer: Other:
@@ -868,7 +893,6 @@
 - Adding a generic ThrowsAsync method [\#692](https://github.com/devlooped/moq/issues/692)
 - Use latest version of 'System.Threading.Tasks.Extensions' [\#690](https://github.com/devlooped/moq/issues/690)
 - Improve processing of multi-dot \(also called "fluent" or "recursive"\) setup expressions [\#643](https://github.com/devlooped/moq/issues/643)
-- Should Moq stop targeting .NET Standard in favor of .NET Core? [\#630](https://github.com/devlooped/moq/issues/630)
 
 :twisted_rightwards_arrows: Merged:
 
@@ -976,7 +1000,6 @@
 
 :bug: Fixed bugs:
 
-- Does `SetupAllProperties` actually create any setups, or does it not? [\#681](https://github.com/devlooped/moq/issues/681)
 - Verification exception message produces incomplete call expression for delegate mocks  [\#678](https://github.com/devlooped/moq/issues/678)
 - Verification exception message does include configured setups for delegate mocks [\#677](https://github.com/devlooped/moq/issues/677)
 - `.Callback(…)` after `.Returns(…)` / `.CallBase()` causes a variety of issues [\#668](https://github.com/devlooped/moq/issues/668)
@@ -996,8 +1019,6 @@
 - Occational null ref in CreateProxy [\#653](https://github.com/devlooped/moq/issues/653)
 - Callback may not be threadsafe \(ID10T error\) [\#651](https://github.com/devlooped/moq/issues/651)
 - Close all stale and dormant issues as "unresolved" [\#642](https://github.com/devlooped/moq/issues/642)
-- Have you considered writing Roslyn analyzers & quick fixes for Moq4? [\#522](https://github.com/devlooped/moq/issues/522)
-- mock.Setup\(m =\> m.A.B.X\) should setup only what's minimally required. It shouldn't setup all properties, nor override preexisting setups in A or B. [\#426](https://github.com/devlooped/moq/issues/426)
 - Setting multiple indexed objects' property directly via Linq fails [\#314](https://github.com/devlooped/moq/issues/314)
 - SetupSet problems with It.IsAny\<\> and indexer properties [\#218](https://github.com/devlooped/moq/issues/218)
 - Moq 64bit bad performance [\#188](https://github.com/devlooped/moq/issues/188)
@@ -1065,7 +1086,6 @@
 
 - C\# 7.2 `in ValueType` parameters are not supported with .NET Standard / Core [\#605](https://github.com/devlooped/moq/issues/605)
 - Add missing sequence setup methods `ReturnsAsync` and `ThrowsAsync` for `ValueTask<TResult>` [\#599](https://github.com/devlooped/moq/issues/599)
-- Recursive/Deep Mock setup [\#597](https://github.com/devlooped/moq/issues/597)
 
 :bug: Fixed bugs:
 
@@ -1091,7 +1111,6 @@
 - Intellisense puts red squiggly under wrong method [\#604](https://github.com/devlooped/moq/issues/604)
 - Verify an overloaded method with params string\[\]  [\#603](https://github.com/devlooped/moq/issues/603)
 - Q: Verify with It.IsAny for structs? [\#601](https://github.com/devlooped/moq/issues/601)
-- Raise does not trigger event handler when CallBase is true [\#586](https://github.com/devlooped/moq/issues/586)
 - `Mock.Of<T>()` is much slower than `new Mock<T>` \(up to several orders of magnitude\) [\#547](https://github.com/devlooped/moq/issues/547)
 - Create a `CONTRIBUTING.md` [\#471](https://github.com/devlooped/moq/issues/471)
 - Add benchmarks [\#388](https://github.com/devlooped/moq/issues/388)
@@ -1166,7 +1185,6 @@
 
 :sparkles: Implemented enhancements:
 
-- Verify that no unverified methods were called \(alternative to Strict\) [\#527](https://github.com/devlooped/moq/issues/527)
 - Allow the equivalent of It.IsAny with ref parameters in `Setup` [\#479](https://github.com/devlooped/moq/issues/479)
 - SetupSequence is missing for void methods [\#451](https://github.com/devlooped/moq/issues/451)
 - Detect method signature mismatch in `Setup` / `Returns` [\#445](https://github.com/devlooped/moq/issues/445)
