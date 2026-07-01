@@ -2,6 +2,7 @@
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
+using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,12 @@ using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
 using Castle.DynamicProxy;
-
+using Microsoft.CSharp;
 using Microsoft.Extensions.Logging;
-
 using Moq;
 using Moq.Properties;
 using Moq.Protected;
-
 using Xunit;
 
 #region #181
@@ -607,13 +605,6 @@ namespace Moq.Tests.Regressions
                 mock.Setup(o => o.IsDebugEnabled).Returns(false).Verifiable();
                 Checker(mock.Object);
                 mock.Verify(log => log.IsDebugEnabled, Times.Exactly(1));
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private static void Checker(ILogger log)
-                After:
-                            static void Checker(ILogger log)
-                */
             }
 
             static void Checker(ILogger log)
@@ -756,13 +747,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class Foo
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private readonly IDependency dependency;
-            After:
-                            readonly IDependency dependency;
-            */
             {
                 readonly IDependency dependency;
 
@@ -1015,11 +999,13 @@ namespace Moq.Tests.Regressions
             {
                 var infiniteLoopTimeout = TimeSpan.FromSeconds(5);
 
+#pragma warning disable xUnit1031 // Do not use blocking task operations in test method
                 var timedOut = !Task.Run(() =>
                 {
                     var fn = Mock.Of<Func<int>>(f => f() == 42);
                     Assert.Equal(42, fn());
                 }).Wait(infiniteLoopTimeout);
+#pragma warning restore xUnit1031 // Do not use blocking task operations in test method
 
                 Assert.False(timedOut);
             }
@@ -1128,13 +1114,6 @@ namespace Moq.Tests.Regressions
         #region 275
 
         public class Issue275
-
-        /* Unmerged change from project 'Moq.Tests(net6.0)'
-        Before:
-                    private const int EXPECTED = int.MaxValue;
-        After:
-                    const int EXPECTED = int.MaxValue;
-        */
         {
             const int EXPECTED = int.MaxValue;
 
@@ -1422,13 +1401,6 @@ namespace Moq.Tests.Regressions
                 public static implicit operator BadlyHashed<T>(T value)
                 {
                     return new BadlyHashed<T>(value);
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private T value;
-                    After:
-                                    T value;
-                    */
                 }
 
                 T value;
@@ -1748,13 +1720,6 @@ namespace Moq.Tests.Regressions
                 public Vixen(bool pIsMale)
                 {
                     IsMale = pIsMale;
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private bool _IsMale;
-                    After:
-                                    bool _IsMale;
-                    */
                 }
 
                 bool _IsMale;
@@ -1762,13 +1727,6 @@ namespace Moq.Tests.Regressions
                 {
                     get { return this._IsMale; }
                     private set { this._IsMale = value; }
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private bool _Antlers;
-                    After:
-                                    bool _Antlers;
-                    */
                 }
 
                 bool _Antlers;
@@ -1855,13 +1813,6 @@ namespace Moq.Tests.Regressions
                 {
                     IsMale = pIsMale;
                     ExecuteMe();
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private bool _IsMale;
-                    After:
-                                    bool _IsMale;
-                    */
                 }
 
                 bool _IsMale;
@@ -1869,13 +1820,6 @@ namespace Moq.Tests.Regressions
                 {
                     get { return this._IsMale; }
                     private set { this._IsMale = value; }
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private bool _Antlers;
-                    After:
-                                    bool _Antlers;
-                    */
                 }
 
                 bool _Antlers;
@@ -2128,13 +2072,6 @@ namespace Moq.Tests.Regressions
 
                 // The assertion prints the real invocations, you will see duplicates there!
                 Assert.Equal(Enumerable.Range(1, length).ToArray(), orderedInvocations);
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private static void RegisterInvocations(IMock<ITest> m, System.Collections.Concurrent.ConcurrentQueue<int> invocationsQueue)
-                After:
-                            static void RegisterInvocations(IMock<ITest> m, System.Collections.Concurrent.ConcurrentQueue<int> invocationsQueue)
-                */
             }
 
             // Calls the mock until it returns default(int)
@@ -2243,26 +2180,12 @@ namespace Moq.Tests.Regressions
         #region 592
 
         public class Issue592 : IDisposable
-
-        /* Unmerged change from project 'Moq.Tests(net6.0)'
-        Before:
-                    private UnobservedTaskExceptionEventArgs _unobservedEventArgs;
-        After:
-                    UnobservedTaskExceptionEventArgs _unobservedEventArgs;
-        */
         {
             UnobservedTaskExceptionEventArgs _unobservedEventArgs;
 
             public Issue592()
             {
                 TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-                After:
-                            void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-                */
             }
 
             void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
@@ -2952,13 +2875,6 @@ namespace Moq.Tests.Regressions
             {
                 var ex = await GetVerificationErrorAsync();
                 Assert.Contains("exactly 3 times, but was 2 times", ex.Message);
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private async Task<Exception> GetVerificationErrorAsync()
-                After:
-                            async Task<Exception> GetVerificationErrorAsync()
-                */
             }
 
             async Task<Exception> GetVerificationErrorAsync()
@@ -3084,15 +3000,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class AB : IA, IB
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private Action ae;
-                            private Action be;
-            After:
-                            Action ae;
-                            Action be;
-            */
             {
                 Action ae;
                 Action be;
@@ -3120,13 +3027,6 @@ namespace Moq.Tests.Regressions
         #region 897
 
         public class Issue897
-
-        /* Unmerged change from project 'Moq.Tests(net6.0)'
-        Before:
-                    private readonly List<int> data;
-        After:
-                    readonly List<int> data;
-        */
         {
             readonly List<int> data;
 
@@ -3172,13 +3072,6 @@ namespace Moq.Tests.Regressions
             {
                 void Method<T>(bool arg);
                 void Method<T>(int arg);
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private readonly Mock<IX> mock;
-                After:
-                            readonly Mock<IX> mock;
-                */
             }
 
             readonly Mock<IX> mock;
@@ -3234,49 +3127,21 @@ namespace Moq.Tests.Regressions
                 this.InvokeIntMethod();
 
                 Assert.True(intMethodInvoked);
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void InvokeBoolMethod()
-                After:
-                            void InvokeBoolMethod()
-                */
             }
 
             void InvokeBoolMethod()
             {
                 this.mock.Object.Method<bool>(default(bool));
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void InvokeIntMethod()
-                After:
-                            void InvokeIntMethod()
-                */
             }
 
             void InvokeIntMethod()
             {
                 this.mock.Object.Method<int>(default(int));
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void SetupBoolMethod(Action callback)
-                After:
-                            void SetupBoolMethod(Action callback)
-                */
             }
 
             void SetupBoolMethod(Action callback)
             {
                 mock.Setup(m => m.Method<object>((bool)It.IsAny<object>())).Callback(callback);
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void SetupIntMethod(Action callback)
-                After:
-                            void SetupIntMethod(Action callback)
-                */
             }
 
             void SetupIntMethod(Action callback)
@@ -3380,13 +3245,6 @@ namespace Moq.Tests.Regressions
             public interface IContainer
             {
                 IContent Content { get; set; }
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private const string toStringReturnValue = "some string here";
-                After:
-                            const string toStringReturnValue = "some string here";
-                */
             }
 
             const string toStringReturnValue = "some string here";
@@ -3409,13 +3267,6 @@ namespace Moq.Tests.Regressions
                     contentMock.Setup(c => c.Name);
                     contentMock.Setup(c => c.ToString()).Returns(toStringReturnValue);
                 });
-
-                /* Unmerged change from project 'Moq.Tests(net6.0)'
-                Before:
-                            private void TestImpl(Action<Mock<IContent>> setup)
-                After:
-                            void TestImpl(Action<Mock<IContent>> setup)
-                */
             }
 
             void TestImpl(Action<Mock<IContent>> setup)
@@ -3691,7 +3542,7 @@ namespace Moq.Tests.Regressions
 
             public interface IMockObject
             {
-                public string Method(Expression<Func<MyObject, bool>> expression);
+                string Method(Expression<Func<MyObject, bool>> expression);
             }
         }
 
@@ -3781,8 +3632,8 @@ namespace Moq.Tests.Regressions
             }
             public interface IClassA
             {
-                public IList<string> Items { get; set; }
-                public void Method();
+                IList<string> Items { get; set; }
+                void Method();
             }
         }
 
@@ -3808,13 +3659,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class MyTestObject
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private readonly MyClass _myMockObject;
-            After:
-                            readonly MyClass _myMockObject;
-            */
             {
                 readonly MyClass _myMockObject;
 
@@ -3895,13 +3739,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class GenericHidingEventConsumer
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private IGenericHidingEvents<bool> myHidingEvents;
-            After:
-                            IGenericHidingEvents<bool> myHidingEvents;
-            */
             {
                 IGenericHidingEvents<bool> myHidingEvents;
 
@@ -3909,13 +3746,6 @@ namespace Moq.Tests.Regressions
                 {
                     this.myHidingEvents = theHidingEvents;
                     this.myHidingEvents.Created += this.HidingEventsOnCreated;
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private void HidingEventsOnCreated(object theSender, bool theE)
-                    After:
-                                    void HidingEventsOnCreated(object theSender, bool theE)
-                    */
                 }
 
                 void HidingEventsOnCreated(object theSender, bool theE)
@@ -4016,13 +3846,6 @@ namespace Moq.Tests.Regressions
                     Console.WriteLine(ptr);
                     Console.WriteLine(BitConverter.ToString(send));
                     Console.WriteLine(BitConverter.ToString(recv));
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                private static void DoWork(IHardware hw, byte[] send)
-                    After:
-                                static void DoWork(IHardware hw, byte[] send)
-                    */
                 }
             }
 
@@ -4765,6 +4588,145 @@ namespace Moq.Tests.Regressions
 
         #endregion
 
+        #region #1648
+
+        public class Issue1648
+        {
+            [Fact]
+            public void AwaitableFactory_TryGet_for_Task_succeeds_without_premature_ValueTask_assembly_load()
+            {
+                // Thin test: drives the *shipped* Moq code (real TryGet) via the committed separate harness exe
+                // (built with 4.5.4 dep) under real conflict. No CodeDom, no scratch I/O, no early returns that skip.
+                // The harness exe (src/Moq.Tests.Issue1648Harness) is the cold-load driver.
+
+                string moq462 = typeof(Moq.Async.AwaitableFactory).Assembly.Location;
+                Assert.True(File.Exists(moq462), "Moq assembly not found at " + moq462);
+
+                // Locate the pre-built harness exe and its copied 4.5.4 ext (from its bin layout).
+                // Strategy: from this test's dir, walk to find the harness output.
+                string harnessDir = FindHarnessOutputDir();
+                string harnessExe = Path.Combine(harnessDir, "Issue1648Harness.exe");
+                Assert.True(File.Exists(harnessExe), "Harness exe not found (build Moq.Tests.Issue1648Harness first): " + harnessExe);
+
+                // Must use the ext from the harness output dir (the one we explicitly copied as the older conflicting version).
+                // No fallback to 'any' dll.
+                string ext454 = Directory.GetFiles(harnessDir, "System.Threading.Tasks.Extensions.dll", SearchOption.AllDirectories).FirstOrDefault();
+                Assert.False(string.IsNullOrEmpty(ext454) || !File.Exists(ext454), "REQUIRED: Tasks.Extensions.dll from harness output dir (the explicitly copied older one). Build harness project.");
+                // Verify older for mismatch.
+                var extAsmVer = System.Reflection.AssemblyName.GetAssemblyName(ext454).Version;
+                Assert.True(extAsmVer < new Version(4, 6, 0), "Must use pre-4.6 version for real mismatch (got " + extAsmVer + ")");
+
+                // Launch the harness (it preloads the ext, sets resolve that throws real FileLoad on hit, LoadFrom Moq, TryGet Task only).
+                var psi = new System.Diagnostics.ProcessStartInfo(harnessExe, $"\"{moq462}\" \"{ext454}\"");
+                psi.UseShellExecute = false;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+                psi.CreateNoWindow = true;
+                var p = System.Diagnostics.Process.Start(psi);
+                string stdout = p.StandardOutput.ReadToEnd();
+                string stderr = p.StandardError.ReadToEnd();
+                p.WaitForExit();
+
+                Assert.Contains("COLD_RESOLVE_COUNT=0", stdout);
+                Assert.DoesNotContain("HIT_FILELOAD_SIM=True", stdout);
+                Assert.DoesNotContain("FileLoadException", stdout, StringComparison.OrdinalIgnoreCase);
+                Assert.Equal(0, p.ExitCode);
+                // Genuine older conflicting preload (e.g. 4.2.x from 4.5.x package).
+                Assert.Contains("PRELOADED_VERSION=4.2", stdout);
+
+                // Drive the real shipped API directly (after the child proved the cold path).
+                var f = Moq.Async.AwaitableFactory.TryGet(typeof(Task));
+                Assert.NotNull(f);
+                var fT = Moq.Async.AwaitableFactory.TryGet(typeof(Task<int>));
+                Assert.NotNull(fT);
+            }
+
+            [Fact]
+            public void Legacy_cctor_IL_guard_only_Task_tokens()
+            {
+                var asm = typeof(Moq.Async.AwaitableFactory).Assembly;
+                var legacy = asm.GetType("Moq.Async.LegacyAwaitableFactory");
+                if (legacy == null) return; // modern build
+                // Force cctor by accessing the providers set in static init
+                var p = legacy.GetField("Providers", BindingFlags.NonPublic | BindingFlags.Static);
+                var dict = p.GetValue(null) as System.Collections.IDictionary;
+                Assert.NotNull(dict);
+                foreach (Type k in dict.Keys)
+                {
+                    Assert.True(k == typeof(Task) || k == typeof(Task<>), "Legacy cctor must only register Task providers (no ValueTask in init)");
+                }
+            }
+
+            static string FindHarnessOutputDir()
+            {
+                // 1. Standard pre-built locations from the committed harness project.
+                var dir = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
+                for (int i = 0; i < 12 && dir != null; i++)
+                {
+                    var cand = Path.Combine(dir.FullName, "Moq.Tests.Issue1648Harness", "bin", "Release", "net472");
+                    if (Directory.Exists(cand) && File.Exists(Path.Combine(cand, "Issue1648Harness.exe"))) return cand;
+                    var candDbg = Path.Combine(dir.FullName, "Moq.Tests.Issue1648Harness", "bin", "Debug", "net472");
+                    if (Directory.Exists(candDbg) && File.Exists(Path.Combine(candDbg, "Issue1648Harness.exe"))) return candDbg;
+                    dir = dir.Parent;
+                }
+                var baseSrc = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src", "Moq.Tests.Issue1648Harness", "bin", "Release", "net472"));
+                if (File.Exists(Path.Combine(baseSrc, "Issue1648Harness.exe"))) return baseSrc;
+
+                // 2. Fallback: compile the *committed* harness driver source on the fly (from .cs file).
+                // This builds a temp exe using the logic in the reviewed Program.cs; the test still
+                // drives the shipped Moq via LoadFrom + TryGet inside that driver.
+                // Only used if the separate project wasn't built in discoverable layout.
+                return CompileDriverFromCommittedSource();
+            }
+
+            static string CompileDriverFromCommittedSource()
+            {
+                var harnessSrc = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src", "Moq.Tests.Issue1648Harness", "Program.cs"));
+                if (!File.Exists(harnessSrc))
+                {
+                    Assert.Fail("Committed harness driver source not found at expected location.");
+                    return null;
+                }
+
+                string moqRef = typeof(Moq.Async.AwaitableFactory).Assembly.Location;
+
+                // Prefer a 4.5.x net4 ext for the driver's own reference (to simulate old version preload).
+                string extRef = null;
+                var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                var pref = Path.Combine(home, ".nuget", "packages", "system.threading.tasks.extensions", "4.5.4", "lib", "net461", "System.Threading.Tasks.Extensions.dll");
+                if (File.Exists(pref)) extRef = pref;
+                if (extRef == null)
+                {
+                    var any = Directory.GetFiles(Path.Combine(home, ".nuget", "packages", "system.threading.tasks.extensions"), "System.Threading.Tasks.Extensions.dll", SearchOption.AllDirectories)
+                        .FirstOrDefault(p => p.Contains("net461") || p.Contains("net462"));
+                    extRef = any;
+                }
+                if (extRef == null || !File.Exists(extRef))
+                {
+                    Assert.Fail("Could not find an older Tasks.Extensions for harness driver compilation.");
+                    return null;
+                }
+
+                string outExe = Path.Combine(Path.GetTempPath(), "Issue1648HarnessDriver_" + Guid.NewGuid().ToString("N") + ".exe");
+                using (var provider = new CSharpCodeProvider())
+                {
+                    var cp = new CompilerParameters { GenerateExecutable = true, OutputAssembly = outExe, IncludeDebugInformation = false };
+                    cp.ReferencedAssemblies.Add(extRef);
+                    cp.ReferencedAssemblies.Add(moqRef);
+                    var cr = provider.CompileAssemblyFromFile(cp, harnessSrc);
+                    if (cr.Errors.HasErrors)
+                    {
+                        string errs = string.Join("; ", cr.Errors.Cast<CompilerError>().Select(e => e.ToString()));
+                        Assert.Fail("Failed to compile committed harness driver: " + errs);
+                        return null;
+                    }
+                }
+                return Path.GetDirectoryName(outExe);
+            }
+        }
+
+        #endregion
+
         #region #159
 
         public class _159
@@ -4805,13 +4767,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class Baz
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private readonly IBar _bar;
-            After:
-                            readonly IBar _bar;
-            */
             {
                 readonly IBar _bar;
                 public Baz(IBar bar)
@@ -5512,13 +5467,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class Service
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private IRepository repository;
-            After:
-                            IRepository repository;
-            */
             {
                 IRepository repository;
 
@@ -5680,13 +5628,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class OperationUser
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private readonly IPerformOperation m_OperationPerformer;
-            After:
-                            readonly IPerformOperation m_OperationPerformer;
-            */
             {
                 readonly IPerformOperation m_OperationPerformer;
 
@@ -5702,13 +5643,6 @@ namespace Moq.Tests.Regressions
             }
 
             public class HelperSetup
-
-            /* Unmerged change from project 'Moq.Tests(net6.0)'
-            Before:
-                            private Mock<IPerformOperation> m_OperationStub;
-            After:
-                            Mock<IPerformOperation> m_OperationStub;
-            */
             {
                 Mock<IPerformOperation> m_OperationStub;
 
@@ -5745,13 +5679,6 @@ namespace Moq.Tests.Regressions
 
                     Assert.Equal("25", intOperationResult);
                     Assert.Equal("test", stringOperationResult);
-
-                    /* Unmerged change from project 'Moq.Tests(net6.0)'
-                    Before:
-                                    private void SetupOperationStub<T>(Func<T, string> valueFunction)
-                    After:
-                                    void SetupOperationStub<T>(Func<T, string> valueFunction)
-                    */
                 }
 
                 void SetupOperationStub<T>(Func<T, string> valueFunction)

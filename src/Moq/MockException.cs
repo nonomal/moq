@@ -56,7 +56,7 @@ namespace Moq
         internal static MockException NoMatchingCalls(
             Mock rootMock,
             LambdaExpression expression,
-            string failMessage,
+            string? failMessage,
             Times times,
             int callCount)
         {
@@ -172,7 +172,7 @@ namespace Moq
         ///   and whose reason(s) is the combination of the given <paramref name="errors"/>' reason(s).
         ///   Used by <see cref="MockFactory.VerifyMocks(Action{Mock})"/> when it finds one or more mocks with verification errors.
         /// </summary>
-        internal static MockException Combined(IEnumerable<MockException> errors, string preamble)
+        internal static MockException Combined(IEnumerable<MockException> errors, string? preamble)
         {
             Debug.Assert(errors != null);
             Debug.Assert(errors.Any());
@@ -212,52 +212,10 @@ namespace Moq
             }
 
             return new MockException(MockExceptionReasons.UnverifiedInvocations, message.TrimEnd().ToString());
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private readonly MockExceptionReasons reasons;
-            After:
-                    readonly MockExceptionReasons reasons;
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private readonly MockExceptionReasons reasons;
-            After:
-                    readonly MockExceptionReasons reasons;
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private readonly MockExceptionReasons reasons;
-            After:
-                    readonly MockExceptionReasons reasons;
-            */
         }
 
         readonly MockExceptionReasons reasons;
 
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private MockException(MockExceptionReasons reasons, string message)
-        After:
-                MockException(MockExceptionReasons reasons, string message)
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private MockException(MockExceptionReasons reasons, string message)
-        After:
-                MockException(MockExceptionReasons reasons, string message)
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private MockException(MockExceptionReasons reasons, string message)
-        After:
-                MockException(MockExceptionReasons reasons, string message)
-        */
         MockException(MockExceptionReasons reasons, string message)
             : base(message)
         {
@@ -290,7 +248,7 @@ namespace Moq
           System.Runtime.Serialization.StreamingContext context)
             : base(info, context)
         {
-            this.reasons = (MockExceptionReasons)info.GetValue(nameof(this.reasons), typeof(MockExceptionReasons));
+            this.reasons = (MockExceptionReasons)info.GetValue(nameof(this.reasons), typeof(MockExceptionReasons))!;
         }
 
         /// <summary>

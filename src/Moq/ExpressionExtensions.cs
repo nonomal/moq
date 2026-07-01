@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,27 +17,6 @@ using Moq.Protected;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal static partial class ExpressionExtensions
-    After:
-        static partial class ExpressionExtensions
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal static partial class ExpressionExtensions
-    After:
-        static partial class ExpressionExtensions
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal static partial class ExpressionExtensions
-    After:
-        static partial class ExpressionExtensions
-    */
     static partial class ExpressionExtensions
     {
         /// <summary>
@@ -85,7 +65,11 @@ namespace Moq
             return ExpressionCompiler.Instance.Compile(expression);
         }
 
-        public static bool IsMatch(this Expression expression, out Match match)
+#if NULLABLE_REFERENCE_TYPES
+        public static bool IsMatch(this Expression expression, [NotNullWhen(true)] out Match? match)
+#else
+        public static bool IsMatch(this Expression expression, out Match? match)
+#endif
         {
             if (expression is MatchExpression matchExpression)
             {
@@ -283,6 +267,7 @@ namespace Moq
                             }
                             else  // This should be unreachable.
                             {
+                                // TODO: Should we throw here?
                                 method = null;
                             }
                             p = new MethodExpectation(
@@ -307,7 +292,7 @@ namespace Moq
                                         expression: Expression.Lambda(
                                             Expression.Invoke(parameter, arguments),
                                             parameter),
-                                        method: r.Type.GetMethod("Invoke", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance),
+                                        method: r.Type.GetMethod("Invoke", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)!,
                                         arguments);
                             return;
                         }
@@ -317,7 +302,7 @@ namespace Moq
                             var memberAccessExpression = (MemberExpression)e;
                             Debug.Assert(memberAccessExpression.Member is PropertyInfo);
 
-                            if (IsResult(memberAccessExpression.Member, out var awaitableFactory))
+                            if (IsResult(memberAccessExpression.Member, out var awaitableFactory) && awaitableFactory is not null)
                             {
                                 Split(memberAccessExpression.Expression, out r, out p);
                                 p.AddResultExpression(
@@ -342,7 +327,8 @@ namespace Moq
                             }
                             else  // This should be unreachable.
                             {
-                                method = null;
+                                // TODO: Should we throw here?
+                                method = null!;
                             }
                             p = new MethodExpectation(
                                         expression: Expression.Lambda(
@@ -360,9 +346,9 @@ namespace Moq
                 }
             }
 
-            bool IsResult(MemberInfo member, out IAwaitableFactory awaitableFactory)
+            bool IsResult(MemberInfo member, out IAwaitableFactory? awaitableFactory)
             {
-                var instanceType = member.DeclaringType;
+                var instanceType = member.DeclaringType!;
                 awaitableFactory = AwaitableFactory.TryGet(instanceType);
                 var returnType = member switch
                 {
@@ -384,7 +370,7 @@ namespace Moq
             // the expression. we attempt to correct this here by checking whether the type of the accessed object
             // has a property by the same name whose base definition equals the property in the expression; if so,
             // we "upgrade" to the derived property.
-            if (property.DeclaringType != expression.Expression.Type)
+            if (property.DeclaringType != expression.Expression!.Type)
             {
                 var parameterTypes = new ParameterTypes(property.GetIndexParameters());
                 var derivedProperty = expression.Expression.Type
@@ -465,27 +451,6 @@ namespace Moq
             return Evaluator.PartialEval(
                 expression,
                 PartialMatcherAwareEval_ShouldEvaluate);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            After:
-                    static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            After:
-                    static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            After:
-                    static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)
-            */
         }
 
         static bool PartialMatcherAwareEval_ShouldEvaluate(Expression expression)

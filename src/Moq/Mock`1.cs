@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -69,33 +70,6 @@ namespace Moq
     ///   </code>
     /// </example>
     public partial class Mock<T> : Mock, IMock<T> where T : class
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private static Type[] inheritedInterfaces;
-                private static int serialNumberCounter;
-        After:
-                static Type[] inheritedInterfaces;
-                static int serialNumberCounter;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private static Type[] inheritedInterfaces;
-                private static int serialNumberCounter;
-        After:
-                static Type[] inheritedInterfaces;
-                static int serialNumberCounter;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private static Type[] inheritedInterfaces;
-                private static int serialNumberCounter;
-        After:
-                static Type[] inheritedInterfaces;
-                static int serialNumberCounter;
-        */
     {
         static Type[] inheritedInterfaces;
         static int serialNumberCounter;
@@ -109,120 +83,17 @@ namespace Moq
                 .ToArray();
 
             serialNumberCounter = 0;
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private T instance;
-                    private List<Type> additionalInterfaces;
-                    private Dictionary<Type, object> configuredDefaultValues;
-                    private object[] constructorArguments;
-                    private DefaultValueProvider defaultValueProvider;
-                    private EventHandlerCollection eventHandlers;
-                    private InvocationCollection invocations;
-                    private string name;
-                    private SetupCollection setups;
-            After:
-                    T instance;
-                    List<Type> additionalInterfaces;
-                    Dictionary<Type, object> configuredDefaultValues;
-                    object[] constructorArguments;
-                    DefaultValueProvider defaultValueProvider;
-                    EventHandlerCollection eventHandlers;
-                    InvocationCollection invocations;
-                    string name;
-                    SetupCollection setups;
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private T instance;
-                    private List<Type> additionalInterfaces;
-                    private Dictionary<Type, object> configuredDefaultValues;
-                    private object[] constructorArguments;
-                    private DefaultValueProvider defaultValueProvider;
-                    private EventHandlerCollection eventHandlers;
-                    private InvocationCollection invocations;
-                    private string name;
-                    private SetupCollection setups;
-            After:
-                    T instance;
-                    List<Type> additionalInterfaces;
-                    Dictionary<Type, object> configuredDefaultValues;
-                    object[] constructorArguments;
-                    DefaultValueProvider defaultValueProvider;
-                    EventHandlerCollection eventHandlers;
-                    InvocationCollection invocations;
-                    string name;
-                    SetupCollection setups;
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private T instance;
-                    private List<Type> additionalInterfaces;
-                    private Dictionary<Type, object> configuredDefaultValues;
-                    private object[] constructorArguments;
-                    private DefaultValueProvider defaultValueProvider;
-                    private EventHandlerCollection eventHandlers;
-                    private InvocationCollection invocations;
-                    private string name;
-                    private SetupCollection setups;
-            After:
-                    T instance;
-                    List<Type> additionalInterfaces;
-                    Dictionary<Type, object> configuredDefaultValues;
-                    object[] constructorArguments;
-                    DefaultValueProvider defaultValueProvider;
-                    EventHandlerCollection eventHandlers;
-                    InvocationCollection invocations;
-                    string name;
-                    SetupCollection setups;
-            */
         }
 
-        T instance;
+        T? instance;
         List<Type> additionalInterfaces;
-        Dictionary<Type, object> configuredDefaultValues;
-        object[] constructorArguments;
+        Dictionary<Type, object?> configuredDefaultValues;
+        object?[] constructorArguments;
         DefaultValueProvider defaultValueProvider;
         EventHandlerCollection eventHandlers;
         InvocationCollection invocations;
         string name;
         SetupCollection setups;
-
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private MockBehavior behavior;
-                private bool callBase;
-                private Switches switches;
-        After:
-                MockBehavior behavior;
-                bool callBase;
-                Switches switches;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private MockBehavior behavior;
-                private bool callBase;
-                private Switches switches;
-        After:
-                MockBehavior behavior;
-                bool callBase;
-                Switches switches;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private MockBehavior behavior;
-                private bool callBase;
-                private Switches switches;
-        After:
-                MockBehavior behavior;
-                bool callBase;
-                Switches switches;
-        */
         MockBehavior behavior;
         bool callBase;
         Switches switches;
@@ -240,6 +111,7 @@ namespace Moq
             // The skipInitialize parameter is not used at all, and it's 
             // just to differentiate this ctor that should do nothing 
             // from the regular ones which initializes the proxy, etc.
+            // TODO: How should nullable references be handled here?
         }
 
         /// <summary>
@@ -269,7 +141,7 @@ namespace Moq
         ///     var mock = new Mock&lt;MyProvider&gt;(someArgument, 25);
         ///   </code>
         /// </example>
-        public Mock(params object[] args)
+        public Mock(params object?[]? args)
             : this(MockBehavior.Default, args)
         {
         }
@@ -284,7 +156,7 @@ namespace Moq
         ///   </code>
         /// </example>
         public Mock(MockBehavior behavior)
-            : this(behavior, new object[0])
+            : this(behavior, Array.Empty<object?>())
         {
         }
 
@@ -298,18 +170,15 @@ namespace Moq
         ///   The mock will try to find the best match constructor given the constructor arguments,
         ///   and invoke that to initialize the instance. This applies only to classes, not interfaces.
         /// </remarks>
-        public Mock(MockBehavior behavior, params object[] args)
+        public Mock(MockBehavior behavior, params object?[]? args)
         {
             Guard.IsMockable(typeof(T));
 
-            if (args == null)
-            {
-                args = new object[] { null };
-            }
+            args ??= new object?[] { null };
 
             this.additionalInterfaces = new List<Type>();
             this.behavior = behavior;
-            this.configuredDefaultValues = new Dictionary<Type, object>();
+            this.configuredDefaultValues = new Dictionary<Type, object?>();
             this.constructorArguments = args;
             this.defaultValueProvider = DefaultValueProvider.Empty;
             this.eventHandlers = new EventHandlerCollection();
@@ -332,27 +201,6 @@ namespace Moq
         /// </example>
         public Mock(Expression<Func<T>> newExpression, MockBehavior behavior = MockBehavior.Default)
             : this(behavior, Expressions.Visitors.ConstructorCallVisitor.ExtractArgumentValues(newExpression))
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private static string CreateUniqueDefaultMockName()
-        After:
-                static string CreateUniqueDefaultMockName()
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private static string CreateUniqueDefaultMockName()
-        After:
-                static string CreateUniqueDefaultMockName()
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private static string CreateUniqueDefaultMockName()
-        After:
-                static string CreateUniqueDefaultMockName()
-        */
         {
         }
 
@@ -363,27 +211,6 @@ namespace Moq
             var name = new StringBuilder();
             name.Append("Mock<").AppendNameOf(typeof(T)).Append(':').Append(serialNumber).Append('>');
             return name.ToString();
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private void CheckParameters()
-            After:
-                    void CheckParameters()
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private void CheckParameters()
-            After:
-                    void CheckParameters()
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private void CheckParameters()
-            After:
-                    void CheckParameters()
-            */
         }
 
         void CheckParameters()
@@ -423,9 +250,9 @@ namespace Moq
             }
         }
 
-        internal override object[] ConstructorArguments => this.constructorArguments;
+        internal override object?[] ConstructorArguments => this.constructorArguments;
 
-        internal override Dictionary<Type, object> ConfiguredDefaultValues => this.configuredDefaultValues;
+        internal override Dictionary<Type, object?> ConfiguredDefaultValues => this.configuredDefaultValues;
 
         /// <summary>
         /// Gets or sets the <see cref="DefaultValueProvider"/> instance that will be used
@@ -468,29 +295,11 @@ namespace Moq
         public override string ToString()
         {
             return this.Name;
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private void InitializeInstance()
-            After:
-                    void InitializeInstance()
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private void InitializeInstance()
-            After:
-                    void InitializeInstance()
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private void InitializeInstance()
-            After:
-                    void InitializeInstance()
-            */
         }
 
+#if NET
+        [MemberNotNull(nameof(instance))]
+#endif
         void InitializeInstance()
         {
             // Determine the set of interfaces that the proxy object should additionally implement.
@@ -819,7 +628,7 @@ namespace Moq
         ///     Assert.Equal(6, v.Value);
         ///   </code>
         /// </example>
-        public Mock<T> SetupProperty<TProperty>(Expression<Func<T, TProperty>> property, TProperty initialValue)
+        public Mock<T> SetupProperty<TProperty>(Expression<Func<T, TProperty>> property, TProperty? initialValue)
         {
             Mock.SetupProperty(this, property, initialValue);
             return this;
@@ -876,6 +685,11 @@ namespace Moq
         /// </param>
         public ISetupConditionResult<T> When(Func<bool> condition)
         {
+            if (condition == null)
+            {
+                throw new ArgumentNullException(nameof(condition));
+            }
+
             return new WhenPhrase<T>(this, new Condition(condition));
         }
 

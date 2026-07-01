@@ -7,49 +7,7 @@ using System.Linq.Expressions;
 
 namespace Moq.Matchers
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal class LazyEvalMatcher : IMatcher
-    After:
-        class LazyEvalMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal class LazyEvalMatcher : IMatcher
-    After:
-        class LazyEvalMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal class LazyEvalMatcher : IMatcher
-    After:
-        class LazyEvalMatcher : IMatcher
-    */
     class LazyEvalMatcher : IMatcher
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private Expression expression;
-    After:
-            Expression expression;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private Expression expression;
-    After:
-            Expression expression;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private Expression expression;
-    After:
-            Expression expression;
-    */
     {
         Expression expression;
 
@@ -58,13 +16,13 @@ namespace Moq.Matchers
             this.expression = expression;
         }
 
-        public bool Matches(object argument, Type parameterType)
+        public bool Matches(object? argument, Type parameterType)
         {
             var eval = Evaluator.PartialEval(this.expression);
             return eval is ConstantExpression ce && new ConstantMatcher(ce.Value).Matches(argument, parameterType);
         }
 
-        public void SetupEvaluatedSuccessfully(object argument, Type parameterType)
+        public void SetupEvaluatedSuccessfully(object? argument, Type parameterType)
         {
             Debug.Assert(this.Matches(argument, parameterType));
         }

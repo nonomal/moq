@@ -17,7 +17,7 @@ namespace Moq
     // These methods are intended to create more readable string representations for use in failure messages.
     partial class StringBuilderExtensions
     {
-        public static StringBuilder AppendExpression(this StringBuilder builder, Expression expression)
+        public static StringBuilder AppendExpression(this StringBuilder builder, Expression? expression)
         {
             if (expression == null)
             {
@@ -120,54 +120,12 @@ namespace Moq
 
                 default:
                     throw new Exception(string.Format(Resources.UnhandledExpressionType, expression.NodeType));
-
-                    /* Unmerged change from project 'Moq(netstandard2.0)'
-                    Before:
-                            private static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    After:
-                            static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    */
-
-                    /* Unmerged change from project 'Moq(netstandard2.1)'
-                    Before:
-                            private static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    After:
-                            static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    */
-
-                    /* Unmerged change from project 'Moq(net6.0)'
-                    Before:
-                            private static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    After:
-                            static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
-                    */
             }
         }
 
         static StringBuilder AppendElementInit(this StringBuilder builder, ElementInit initializer)
         {
             return builder.AppendCommaSeparated("{ ", initializer.Arguments, AppendExpression, " }");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, UnaryExpression expression)
@@ -207,27 +165,6 @@ namespace Moq
             }
 
             return builder;  // TODO: check whether this should be unreachable
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, BinaryExpression expression)
@@ -296,27 +233,6 @@ namespace Moq
                     ExpressionType.SubtractAssign => "-=",
                     _ => nodeType.ToString(),
                 };
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                After:
-                        static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                After:
-                        static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                After:
-                        static StringBuilder AppendExpression(this StringBuilder builder, TypeBinaryExpression expression)
-                */
             }
         }
 
@@ -325,27 +241,6 @@ namespace Moq
             return builder.AppendExpression(expression.Expression)
                           .Append(" is ")
                           .AppendNameOf(expression.TypeOperand);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, ConditionalExpression expression)
@@ -355,53 +250,11 @@ namespace Moq
                           .AppendExpression(expression.IfTrue)
                           .Append(" : ")
                           .AppendExpression(expression.IfFalse);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, ParameterExpression expression)
         {
             return builder.Append(expression.Name ?? "<param>");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, MemberExpression expression)
@@ -420,32 +273,11 @@ namespace Moq
             }
             else
             {
-                builder.AppendNameOf(expression.Member.DeclaringType);
+                builder.AppendNameOf(expression.Member.DeclaringType!);
             }
 
             return builder.Append('.')
                           .Append(expression.Member.Name);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, MethodCallExpression expression)
@@ -468,7 +300,7 @@ namespace Moq
             {
                 Debug.Assert(method.IsStatic);
 
-                builder.AppendNameOf(method.DeclaringType);
+                builder.AppendNameOf(method.DeclaringType!);
             }
 
             if (method.IsGetAccessor())
@@ -524,54 +356,12 @@ namespace Moq
             }
 
             return builder;
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, IndexExpression expression)
         {
             return builder.AppendExpression(expression.Object)
                           .AppendCommaSeparated("[", expression.Arguments, AppendExpression, "]");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, LambdaExpression expression)
@@ -586,56 +376,14 @@ namespace Moq
             }
             return builder.Append(" => ")
                           .AppendExpression(expression.Body);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, NewExpression expression)
         {
-            Type type = (expression.Constructor == null) ? expression.Type : expression.Constructor.DeclaringType;
+            Type type = (expression.Constructor == null) ? expression.Type : expression.Constructor.DeclaringType!;
             return builder.Append("new ")
                           .AppendNameOf(type)
                           .AppendCommaSeparated("(", expression.Arguments, AppendExpression, ")");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, NewArrayExpression expression)
@@ -647,59 +395,17 @@ namespace Moq
 
                 case ExpressionType.NewArrayBounds:
                     return builder.Append("new ")
-                                  .AppendNameOf(expression.Type.GetElementType())
+                                  .AppendNameOf(expression.Type.GetElementType()!)
                                   .AppendCommaSeparated("[", expression.Expressions, AppendExpression, "]");
             }
 
             return builder;  // TODO: check whether this should be unreachable
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, InvocationExpression expression)
         {
             return builder.AppendExpression(expression.Expression)
                           .AppendCommaSeparated("(", expression.Arguments, AppendExpression, ")");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, MemberInitExpression expression)
@@ -730,27 +436,6 @@ namespace Moq
 
                     default:
                         throw new Exception(string.Format(Resources.UnhandledBindingType, binding.BindingType));
-
-                        /* Unmerged change from project 'Moq(netstandard2.0)'
-                        Before:
-                                private static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        After:
-                                static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        */
-
-                        /* Unmerged change from project 'Moq(netstandard2.1)'
-                        Before:
-                                private static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        After:
-                                static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        */
-
-                        /* Unmerged change from project 'Moq(net6.0)'
-                        Before:
-                                private static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        After:
-                                static StringBuilder AppendExpression(this StringBuilder builder, ListInitExpression expression)
-                        */
                 }
             }
         }
@@ -759,27 +444,6 @@ namespace Moq
         {
             return builder.AppendExpression(expression.NewExpression)
                           .AppendCommaSeparated(" { ", expression.Initializers, AppendElementInit, " }");
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            After:
-                    static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)
-            */
         }
 
         static StringBuilder AppendExpression(this StringBuilder builder, MatchExpression expression)

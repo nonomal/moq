@@ -15,29 +15,8 @@ namespace Moq
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Delegate | AttributeTargets.Enum | AttributeTargets.Interface | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
     public class TypeMatcherAttribute : Attribute
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private readonly Type type;
-    After:
-            readonly Type type;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private readonly Type type;
-    After:
-            readonly Type type;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private readonly Type type;
-    After:
-            readonly Type type;
-    */
     {
-        readonly Type type;
+        readonly Type? type;
 
         /// <summary>
         ///   Initializes a new instance of the <see cref="TypeMatcherAttribute"/> class.
@@ -60,14 +39,9 @@ namespace Moq
         /// <param name="type">The <see cref="Type"/> of a type that implements <see cref="ITypeMatcher"/>.</param>
         public TypeMatcherAttribute(Type type)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            this.type = type;
+            this.type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
-        internal Type Type => this.type;
+        internal Type? Type => this.type;
     }
 }

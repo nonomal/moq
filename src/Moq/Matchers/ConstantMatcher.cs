@@ -8,58 +8,16 @@ using System.Linq;
 
 namespace Moq.Matchers
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal class ConstantMatcher : IMatcher
-    After:
-        class ConstantMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal class ConstantMatcher : IMatcher
-    After:
-        class ConstantMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal class ConstantMatcher : IMatcher
-    After:
-        class ConstantMatcher : IMatcher
-    */
     class ConstantMatcher : IMatcher
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private object constantValue;
-    After:
-            object constantValue;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private object constantValue;
-    After:
-            object constantValue;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private object constantValue;
-    After:
-            object constantValue;
-    */
     {
-        object constantValue;
+        object? constantValue;
 
-        public ConstantMatcher(object constantValue)
+        public ConstantMatcher(object? constantValue)
         {
             this.constantValue = constantValue;
         }
 
-        public bool Matches(object argument, Type parameterType)
+        public bool Matches(object? argument, Type parameterType)
         {
             if (object.Equals(argument, constantValue))
             {
@@ -78,35 +36,14 @@ namespace Moq.Matchers
             return false;
         }
 
-        public void SetupEvaluatedSuccessfully(object argument, Type parameterType)
+        public void SetupEvaluatedSuccessfully(object? argument, Type parameterType)
         {
             Debug.Assert(this.Matches(argument, parameterType));
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private bool MatchesEnumerable(IEnumerable enumerable)
-            After:
-                    bool MatchesEnumerable(IEnumerable enumerable)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private bool MatchesEnumerable(IEnumerable enumerable)
-            After:
-                    bool MatchesEnumerable(IEnumerable enumerable)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private bool MatchesEnumerable(IEnumerable enumerable)
-            After:
-                    bool MatchesEnumerable(IEnumerable enumerable)
-            */
         }
 
         bool MatchesEnumerable(IEnumerable enumerable)
         {
-            var constValues = (IEnumerable)constantValue;
+            var constValues = (IEnumerable)constantValue!;
             return constValues.Cast<object>().SequenceEqual(enumerable.Cast<object>());
         }
     }

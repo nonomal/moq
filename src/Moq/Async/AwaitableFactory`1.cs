@@ -9,38 +9,18 @@ using System.Linq.Expressions;
 
 namespace Moq.Async
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
-    */
     /// <summary>
     ///   Abstract base class that facilitates type-safe implementation of <see cref="IAwaitableFactory"/>
     ///   for awaitables that do not produce a result when awaited.
     /// </summary>
     abstract class AwaitableFactory<TAwaitable> : IAwaitableFactory
+        where TAwaitable : notnull
     {
         Type IAwaitableFactory.ResultType => typeof(void);
 
         public abstract TAwaitable CreateCompleted();
 
-        object IAwaitableFactory.CreateCompleted(object result)
+        object IAwaitableFactory.CreateCompleted(object? result)
         {
             Debug.Assert(result == null);
 
@@ -71,7 +51,7 @@ namespace Moq.Async
             return new AwaitExpression(awaitableExpression, this);
         }
 
-        bool IAwaitableFactory.TryGetResult(object awaitable, out object result)
+        bool IAwaitableFactory.TryGetResult(object awaitable, out object? result)
         {
             Debug.Assert(awaitable is TAwaitable);
 

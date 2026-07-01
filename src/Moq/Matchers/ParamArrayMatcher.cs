@@ -6,49 +6,7 @@ using System.Diagnostics;
 
 namespace Moq.Matchers
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal class ParamArrayMatcher : IMatcher
-    After:
-        class ParamArrayMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal class ParamArrayMatcher : IMatcher
-    After:
-        class ParamArrayMatcher : IMatcher
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal class ParamArrayMatcher : IMatcher
-    After:
-        class ParamArrayMatcher : IMatcher
-    */
     class ParamArrayMatcher : IMatcher
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private IMatcher[] matchers;
-    After:
-            IMatcher[] matchers;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private IMatcher[] matchers;
-    After:
-            IMatcher[] matchers;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private IMatcher[] matchers;
-    After:
-            IMatcher[] matchers;
-    */
     {
         IMatcher[] matchers;
 
@@ -59,38 +17,14 @@ namespace Moq.Matchers
             this.matchers = matchers;
         }
 
-        public bool Matches(object argument, Type parameterType)
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    Array values = argument as Array;
-                    if (values == null || this.matchers.Length != values.Length)
-        After:
-                    if (values == null || this.matchers.Length != values.Length)
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    Array values = argument as Array;
-                    if (values == null || this.matchers.Length != values.Length)
-        After:
-                    if (values == null || this.matchers.Length != values.Length)
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    Array values = argument as Array;
-                    if (values == null || this.matchers.Length != values.Length)
-        After:
-                    if (values == null || this.matchers.Length != values.Length)
-        */
+        public bool Matches(object? argument, Type parameterType)
         {
             if (argument is not Array values || this.matchers.Length != values.Length)
             {
                 return false;
             }
 
-            var elementType = parameterType.GetElementType();
+            var elementType = parameterType.GetElementType()!;
 
             for (int index = 0; index < values.Length; index++)
             {
@@ -103,13 +37,13 @@ namespace Moq.Matchers
             return true;
         }
 
-        public void SetupEvaluatedSuccessfully(object argument, Type parameterType)
+        public void SetupEvaluatedSuccessfully(object? argument, Type parameterType)
         {
             Debug.Assert(this.Matches(argument, parameterType));
             Debug.Assert(argument is Array array && array.Length == this.matchers.Length);
 
             var values = (Array)argument;
-            var elementType = parameterType.GetElementType();
+            var elementType = parameterType.GetElementType()!;
             for (int i = 0, n = this.matchers.Length; i < n; ++i)
             {
                 this.matchers[i].SetupEvaluatedSuccessfully(values.GetValue(i), elementType);

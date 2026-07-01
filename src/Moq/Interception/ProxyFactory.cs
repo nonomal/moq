@@ -6,27 +6,6 @@ using System.Reflection;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal abstract class ProxyFactory
-    After:
-        abstract class ProxyFactory
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal abstract class ProxyFactory
-    After:
-        abstract class ProxyFactory
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal abstract class ProxyFactory
-    After:
-        abstract class ProxyFactory
-    */
     abstract class ProxyFactory
     {
         /// <summary>
@@ -34,7 +13,7 @@ namespace Moq
         /// </summary>
         public static ProxyFactory Instance { get; } = new CastleProxyFactory();
 
-        public abstract object CreateProxy(Type mockType, IInterceptor interceptor, Type[] interfaces, object[] arguments);
+        public abstract object CreateProxy(Type mockType, IInterceptor interceptor, Type[] interfaces, object?[] arguments);
 
         public abstract bool IsMethodVisible(MethodInfo method, out string messageIfNotVisible);
 

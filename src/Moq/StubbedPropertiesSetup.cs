@@ -10,63 +10,15 @@ using E = System.Linq.Expressions.Expression;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class StubbedPropertiesSetup : Setup
-    After:
-        sealed class StubbedPropertiesSetup : Setup
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class StubbedPropertiesSetup : Setup
-    After:
-        sealed class StubbedPropertiesSetup : Setup
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class StubbedPropertiesSetup : Setup
-    After:
-        sealed class StubbedPropertiesSetup : Setup
-    */
     sealed class StubbedPropertiesSetup : Setup
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private readonly ConcurrentDictionary<string, object> values;
-            private readonly DefaultValueProvider defaultValueProvider;
-    After:
-            readonly ConcurrentDictionary<string, object> values;
-            readonly DefaultValueProvider defaultValueProvider;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private readonly ConcurrentDictionary<string, object> values;
-            private readonly DefaultValueProvider defaultValueProvider;
-    After:
-            readonly ConcurrentDictionary<string, object> values;
-            readonly DefaultValueProvider defaultValueProvider;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private readonly ConcurrentDictionary<string, object> values;
-            private readonly DefaultValueProvider defaultValueProvider;
-    After:
-            readonly ConcurrentDictionary<string, object> values;
-            readonly DefaultValueProvider defaultValueProvider;
-    */
     {
-        readonly ConcurrentDictionary<string, object> values;
+        readonly ConcurrentDictionary<string, object?> values;
         readonly DefaultValueProvider defaultValueProvider;
 
-        public StubbedPropertiesSetup(Mock mock, DefaultValueProvider defaultValueProvider = null)
+        public StubbedPropertiesSetup(Mock mock, DefaultValueProvider? defaultValueProvider = null)
             : base(originalExpression: null, mock, new PropertyAccessorExpectation(mock))
         {
-            this.values = new ConcurrentDictionary<string, object>();
+            this.values = new ConcurrentDictionary<string, object?>();
             this.defaultValueProvider = defaultValueProvider ?? mock.DefaultValueProvider;
 
             this.MarkAsVerifiable();
@@ -115,52 +67,10 @@ namespace Moq
         }
 
         protected override void VerifySelf()
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private sealed class PropertyAccessorExpectation : Expectation
-        After:
-                sealed class PropertyAccessorExpectation : Expectation
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private sealed class PropertyAccessorExpectation : Expectation
-        After:
-                sealed class PropertyAccessorExpectation : Expectation
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private sealed class PropertyAccessorExpectation : Expectation
-        After:
-                sealed class PropertyAccessorExpectation : Expectation
-        */
         {
         }
 
         sealed class PropertyAccessorExpectation : Expectation
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private readonly LambdaExpression expression;
-        After:
-                    readonly LambdaExpression expression;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private readonly LambdaExpression expression;
-        After:
-                    readonly LambdaExpression expression;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private readonly LambdaExpression expression;
-        After:
-                    readonly LambdaExpression expression;
-        */
         {
             readonly LambdaExpression expression;
 
@@ -169,7 +79,7 @@ namespace Moq
                 Debug.Assert(mock != null);
 
                 var mockType = mock.GetType();
-                var setupAllPropertiesMethod = mockType.GetMethod(nameof(Mock<object>.SetupAllProperties));
+                var setupAllPropertiesMethod = mockType.GetMethod(nameof(Mock<object>.SetupAllProperties))!;
                 var mockedType = setupAllPropertiesMethod.ReturnType.GetGenericArguments()[0];
                 var mockGetMethod = Mock.GetMethod.MakeGenericMethod(mockedType);
                 var mockParam = E.Parameter(mockedType, "m");
@@ -178,7 +88,7 @@ namespace Moq
 
             public override LambdaExpression Expression => this.expression;
 
-            public override bool Equals(Expectation other)
+            public override bool Equals(Expectation? other)
             {
                 return other is PropertyAccessorExpectation pae && ExpressionComparer.Default.Equals(this.expression, pae.expression);
             }

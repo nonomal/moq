@@ -14,65 +14,11 @@ namespace Moq
     ///   Defines the number of invocations allowed by a mocked method.
     /// </summary>
     public readonly struct Times : IEquatable<Times>
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private readonly int from;
-            private readonly int to;
-            private readonly Kind kind;
-    After:
-            readonly int from;
-            readonly int to;
-            readonly Kind kind;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private readonly int from;
-            private readonly int to;
-            private readonly Kind kind;
-    After:
-            readonly int from;
-            readonly int to;
-            readonly Kind kind;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private readonly int from;
-            private readonly int to;
-            private readonly Kind kind;
-    After:
-            readonly int from;
-            readonly int to;
-            readonly Kind kind;
-    */
     {
         readonly int from;
         readonly int to;
         readonly Kind kind;
 
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private Times(Kind kind, int from, int to)
-        After:
-                Times(Kind kind, int from, int to)
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private Times(Kind kind, int from, int to)
-        After:
-                Times(Kind kind, int from, int to)
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private Times(Kind kind, int from, int to)
-        After:
-                Times(Kind kind, int from, int to)
-        */
         Times(Kind kind, int from, int to)
         {
             this.from = from;
@@ -246,7 +192,7 @@ namespace Moq
         ///   <see langword="true"/> if <paramref name="obj"/> has the same value as this instance;
         ///   otherwise, <see langword="false"/>.
         /// </returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is Times other && this.Equals(other);
         }
@@ -303,27 +249,6 @@ namespace Moq
                 Kind.AtMostOnce => "AtMostOnce",
                 Kind.BetweenExclusive => $"Between({this.from - 1}, {this.to + 1}, Exclusive)",
                 Kind.BetweenInclusive => $"Between({this.from}, {this.to}, Inclusive)",
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private enum Kind
-                After:
-                        enum Kind
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private enum Kind
-                After:
-                        enum Kind
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private enum Kind
-                After:
-                        enum Kind
-                */
                 Kind.Exactly => $"Exactly({this.from})",
                 Kind.Once => "Once",
                 Kind.Never => "Never",

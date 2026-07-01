@@ -12,27 +12,6 @@ using TypeNameFormatter;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal static partial class StringBuilderExtensions
-    After:
-        static partial class StringBuilderExtensions
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal static partial class StringBuilderExtensions
-    After:
-        static partial class StringBuilderExtensions
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal static partial class StringBuilderExtensions
-    After:
-        static partial class StringBuilderExtensions
-    */
     static partial class StringBuilderExtensions
     {
         public static StringBuilder Append(this StringBuilder stringBuilder, string str, int startIndex)
@@ -116,7 +95,7 @@ namespace Moq
                     _ => "ref ",
                 });
 
-                parameterType = parameterType.GetElementType();
+                parameterType = parameterType.GetElementType()!;
             }
 
             if (parameterType.IsArray && parameter.IsDefined(typeof(ParamArrayAttribute), true))
@@ -127,7 +106,7 @@ namespace Moq
             return stringBuilder.AppendFormattedName(parameterType);
         }
 
-        public static StringBuilder AppendValueOf(this StringBuilder stringBuilder, object obj)
+        public static StringBuilder AppendValueOf(this StringBuilder stringBuilder, object? obj)
         {
             if (obj == null)
             {
@@ -149,12 +128,11 @@ namespace Moq
             {
                 stringBuilder.AppendNameOf(obj.GetType()).Append('.').Append(obj);
             }
-            else if (obj.GetType().IsArray || (obj.GetType().IsConstructedGenericType && obj.GetType().GetGenericTypeDefinition() == typeof(List<>)))
+            else if (obj is IReadOnlyList<object> list)
             {
                 stringBuilder.Append('[');
                 const int maxCount = 10;
-                var enumerator = ((IEnumerable)obj).GetEnumerator();
-                for (int i = 0; enumerator.MoveNext() && i < maxCount + 1; ++i)
+                for (var i = 0; i < list.Count; i++)
                 {
                     if (i > 0)
                     {
@@ -167,8 +145,9 @@ namespace Moq
                         break;
                     }
 
-                    stringBuilder.AppendValueOf(enumerator.Current);
+                    stringBuilder.AppendValueOf(list[i]);
                 }
+
                 stringBuilder.Append(']');
             }
             else

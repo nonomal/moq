@@ -6,50 +6,8 @@ using System.Collections.Generic;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal class AsInterface<TInterface> : Mock<TInterface>
-    After:
-        class AsInterface<TInterface> : Mock<TInterface>
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal class AsInterface<TInterface> : Mock<TInterface>
-    After:
-        class AsInterface<TInterface> : Mock<TInterface>
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal class AsInterface<TInterface> : Mock<TInterface>
-    After:
-        class AsInterface<TInterface> : Mock<TInterface>
-    */
     class AsInterface<TInterface> : Mock<TInterface>
         where TInterface : class
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private Mock owner;
-        After:
-                Mock owner;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private Mock owner;
-        After:
-                Mock owner;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private Mock owner;
-        After:
-                Mock owner;
-        */
     {
         Mock owner;
 
@@ -61,9 +19,9 @@ namespace Moq
 
         internal override List<Type> AdditionalInterfaces => this.owner.AdditionalInterfaces;
 
-        internal override Dictionary<Type, object> ConfiguredDefaultValues => this.owner.ConfiguredDefaultValues;
+        internal override Dictionary<Type, object?> ConfiguredDefaultValues => this.owner.ConfiguredDefaultValues;
 
-        internal override object[] ConstructorArguments => this.owner.ConstructorArguments;
+        internal override object?[] ConstructorArguments => this.owner.ConstructorArguments;
 
         internal override InvocationCollection MutableInvocations => this.owner.MutableInvocations;
 
@@ -91,7 +49,7 @@ namespace Moq
 
         public override TInterface Object
         {
-            get { return this.owner.Object as TInterface; }
+            get { return (TInterface)this.owner.Object; }
         }
 
         internal override SetupCollection MutableSetups => this.owner.MutableSetups;
@@ -114,7 +72,7 @@ namespace Moq
 
         public override string ToString()
         {
-            return this.owner.ToString();
+            return this.owner.ToString()!;
         }
     }
 }

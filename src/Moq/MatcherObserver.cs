@@ -4,31 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class MatcherObserver : IDisposable
-    After:
-        sealed class MatcherObserver : IDisposable
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class MatcherObserver : IDisposable
-    After:
-        sealed class MatcherObserver : IDisposable
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class MatcherObserver : IDisposable
-    After:
-        sealed class MatcherObserver : IDisposable
-    */
     /// <summary>
     ///   A per-thread observer that records invocations to matchers for later inspection.
     /// </summary>
@@ -42,7 +22,7 @@ namespace Moq
     sealed class MatcherObserver : IDisposable
     {
         [ThreadStatic]
-        static Stack<MatcherObserver> activations;
+        static Stack<MatcherObserver>? activations;
 
         public static MatcherObserver Activate()
         {
@@ -58,7 +38,11 @@ namespace Moq
             return activation;
         }
 
-        public static bool IsActive(out MatcherObserver observer)
+#if NULLABLE_REFERENCE_TYPES
+        public static bool IsActive([NotNullWhen(true)] out MatcherObserver? observer)
+#else
+        public static bool IsActive(out MatcherObserver? observer)
+#endif
         {
             var activations = MatcherObserver.activations;
 
@@ -71,60 +55,12 @@ namespace Moq
             {
                 observer = null;
                 return false;
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private int timestamp;
-                        private List<Observation> observations;
-                After:
-                        int timestamp;
-                        List<Observation> observations;
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private int timestamp;
-                        private List<Observation> observations;
-                After:
-                        int timestamp;
-                        List<Observation> observations;
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private int timestamp;
-                        private List<Observation> observations;
-                After:
-                        int timestamp;
-                        List<Observation> observations;
-                */
             }
         }
 
         int timestamp;
-        List<Observation> observations;
+        List<Observation>? observations;
 
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private MatcherObserver()
-        After:
-                MatcherObserver()
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private MatcherObserver()
-        After:
-                MatcherObserver()
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private MatcherObserver()
-        After:
-                MatcherObserver()
-        */
         MatcherObserver()
         {
         }
@@ -163,7 +99,11 @@ namespace Moq
         ///   and if so, returns the last one.
         /// </summary>
         /// <param name="match">The observed <see cref="Match"/> matcher observed last.</param>
-        public bool TryGetLastMatch(out Match match)
+#if NULLABLE_REFERENCE_TYPES
+        public bool TryGetLastMatch([NotNullWhen(true)] out Match? match)
+#else
+        public bool TryGetLastMatch(out Match? match)
+#endif
         {
             if (this.observations != null && this.observations.Count > 0)
             {
@@ -186,27 +126,6 @@ namespace Moq
             else
             {
                 return Enumerable.Empty<Match>();
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private readonly struct Observation
-                After:
-                        readonly struct Observation
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private readonly struct Observation
-                After:
-                        readonly struct Observation
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private readonly struct Observation
-                After:
-                        readonly struct Observation
-                */
             }
         }
 

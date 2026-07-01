@@ -8,109 +8,12 @@ using System.Diagnostics;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class InvocationCollection : IInvocationList
-    After:
-        sealed class InvocationCollection : IInvocationList
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class InvocationCollection : IInvocationList
-    After:
-        sealed class InvocationCollection : IInvocationList
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class InvocationCollection : IInvocationList
-    After:
-        sealed class InvocationCollection : IInvocationList
-    */
     sealed class InvocationCollection : IInvocationList
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private Invocation[] invocations;
-    After:
-            Invocation[] invocations;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private Invocation[] invocations;
-    After:
-            Invocation[] invocations;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private Invocation[] invocations;
-    After:
-            Invocation[] invocations;
-    */
     {
-        Invocation[] invocations;
-
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private int capacity = 0;
-                private int count = 0;
-        After:
-                int capacity = 0;
-                int count = 0;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private int capacity = 0;
-                private int count = 0;
-        After:
-                int capacity = 0;
-                int count = 0;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private int capacity = 0;
-                private int count = 0;
-        After:
-                int capacity = 0;
-                int count = 0;
-        */
+        Invocation[] invocations = new Invocation[0];
         int capacity = 0;
         int count = 0;
 
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private readonly object invocationsLock = new object();
-                private readonly Mock owner;
-        After:
-                readonly object invocationsLock = new object();
-                readonly Mock owner;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private readonly object invocationsLock = new object();
-                private readonly Mock owner;
-        After:
-                readonly object invocationsLock = new object();
-                readonly Mock owner;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private readonly object invocationsLock = new object();
-                private readonly Mock owner;
-        After:
-                readonly object invocationsLock = new object();
-                readonly Mock owner;
-        */
         readonly object invocationsLock = new object();
         readonly Mock owner;
 
@@ -169,7 +72,7 @@ namespace Moq
             lock (this.invocationsLock)
             {
                 // Replace the collection so readers with a reference to the old collection aren't interrupted
-                this.invocations = null;
+                this.invocations = new Invocation[0];
                 this.count = 0;
                 this.capacity = 0;
 

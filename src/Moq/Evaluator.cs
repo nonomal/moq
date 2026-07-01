@@ -3,31 +3,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal static class Evaluator
-    After:
-        static class Evaluator
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal static class Evaluator
-    After:
-        static class Evaluator
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal static class Evaluator
-    After:
-        static class Evaluator
-    */
     /// <summary>
     /// Provides partial evaluation of subtrees, whenever they can be evaluated locally.
     /// </summary>
@@ -55,54 +35,12 @@ namespace Moq
         public static Expression PartialEval(Expression expression)
         {
             return PartialEval(expression, e => e.NodeType != ExpressionType.Parameter && !(e is MatchExpression));
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private class SubtreeEvaluator : ExpressionVisitor
-            After:
-                    class SubtreeEvaluator : ExpressionVisitor
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private class SubtreeEvaluator : ExpressionVisitor
-            After:
-                    class SubtreeEvaluator : ExpressionVisitor
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private class SubtreeEvaluator : ExpressionVisitor
-            After:
-                    class SubtreeEvaluator : ExpressionVisitor
-            */
         }
 
         /// <summary>
         /// Evaluates and replaces sub-trees when first candidate is reached (top-down)
         /// </summary>
         class SubtreeEvaluator : ExpressionVisitor
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private HashSet<Expression> candidates;
-        After:
-                    HashSet<Expression> candidates;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private HashSet<Expression> candidates;
-        After:
-                    HashSet<Expression> candidates;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private HashSet<Expression> candidates;
-        After:
-                    HashSet<Expression> candidates;
-        */
         {
             HashSet<Expression> candidates;
 
@@ -116,7 +54,10 @@ namespace Moq
                 return this.Visit(exp);
             }
 
-            public override Expression Visit(Expression exp)
+#if NULLABLE_REFERENCE_TYPES
+            [return: NotNullIfNotNull("exp")]
+#endif
+            public override Expression? Visit(Expression? exp)
             {
                 if (exp == null)
                 {
@@ -127,27 +68,6 @@ namespace Moq
                     return Evaluate(exp);
                 }
                 return base.Visit(exp);
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                            private static Expression Evaluate(Expression e)
-                After:
-                            static Expression Evaluate(Expression e)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                            private static Expression Evaluate(Expression e)
-                After:
-                            static Expression Evaluate(Expression e)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                            private static Expression Evaluate(Expression e)
-                After:
-                            static Expression Evaluate(Expression e)
-                */
             }
 
             static Expression Evaluate(Expression e)
@@ -159,27 +79,6 @@ namespace Moq
                 LambdaExpression lambda = Expression.Lambda(e);
                 Delegate fn = lambda.CompileUsingExpressionCompiler();
                 return Expression.Constant(fn.DynamicInvoke(null), e.Type);
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private class Nominator : ExpressionVisitor
-                After:
-                        class Nominator : ExpressionVisitor
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private class Nominator : ExpressionVisitor
-                After:
-                        class Nominator : ExpressionVisitor
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private class Nominator : ExpressionVisitor
-                After:
-                        class Nominator : ExpressionVisitor
-                */
             }
         }
 
@@ -188,42 +87,9 @@ namespace Moq
         /// be part of an evaluated sub-tree.
         /// </summary>
         class Nominator : ExpressionVisitor
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private Func<Expression, bool> fnCanBeEvaluated;
-                    private HashSet<Expression> candidates;
-                    private bool cannotBeEvaluated;
-        After:
-                    Func<Expression, bool> fnCanBeEvaluated;
-                    HashSet<Expression> candidates;
-                    bool cannotBeEvaluated;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private Func<Expression, bool> fnCanBeEvaluated;
-                    private HashSet<Expression> candidates;
-                    private bool cannotBeEvaluated;
-        After:
-                    Func<Expression, bool> fnCanBeEvaluated;
-                    HashSet<Expression> candidates;
-                    bool cannotBeEvaluated;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private Func<Expression, bool> fnCanBeEvaluated;
-                    private HashSet<Expression> candidates;
-                    private bool cannotBeEvaluated;
-        After:
-                    Func<Expression, bool> fnCanBeEvaluated;
-                    HashSet<Expression> candidates;
-                    bool cannotBeEvaluated;
-        */
         {
             Func<Expression, bool> fnCanBeEvaluated;
-            HashSet<Expression> candidates;
+            HashSet<Expression> candidates = null!;
             bool cannotBeEvaluated;
 
             internal Nominator(Func<Expression, bool> fnCanBeEvaluated)
@@ -238,7 +104,7 @@ namespace Moq
                 return this.candidates;
             }
 
-            public override Expression Visit(Expression expression)
+            public override Expression? Visit(Expression? expression)
             {
                 if (expression != null && expression.NodeType != ExpressionType.Quote)
                 {

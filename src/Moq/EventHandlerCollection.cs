@@ -3,53 +3,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class EventHandlerCollection
-    After:
-        sealed class EventHandlerCollection
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class EventHandlerCollection
-    After:
-        sealed class EventHandlerCollection
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class EventHandlerCollection
-    After:
-        sealed class EventHandlerCollection
-    */
     sealed class EventHandlerCollection
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    After:
-            readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    After:
-            readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    After:
-            readonly Dictionary<EventInfo, Delegate> eventHandlers;
-    */
     {
         readonly Dictionary<EventInfo, Delegate> eventHandlers;
 
@@ -78,40 +37,31 @@ namespace Moq
         {
             lock (this.eventHandlers)
             {
-                this.eventHandlers[@event] = Delegate.Remove(this.TryGet(@event), eventHandler);
+                var resultingDelegate = Delegate.Remove(this.TryGet(@event), eventHandler);
+                if (resultingDelegate == null)
+                {
+                    eventHandlers.Remove(@event);
+                }
+                else
+                {
+                    eventHandlers[@event] = resultingDelegate;
+                }
             }
         }
 
-        public bool TryGet(EventInfo @event, out Delegate handlers)
+#if NULLABLE_REFERENCE_TYPES
+        public bool TryGet(EventInfo @event, [NotNullWhen(true)] out Delegate? handlers)
+#else
+        public bool TryGet(EventInfo @event, out Delegate? handlers)
+#endif
         {
             lock (this.eventHandlers)
             {
-                return this.eventHandlers.TryGetValue(@event, out handlers) && handlers != null;
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private Delegate TryGet(EventInfo @event)
-                After:
-                        Delegate TryGet(EventInfo @event)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private Delegate TryGet(EventInfo @event)
-                After:
-                        Delegate TryGet(EventInfo @event)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private Delegate TryGet(EventInfo @event)
-                After:
-                        Delegate TryGet(EventInfo @event)
-                */
+                return this.eventHandlers.TryGetValue(@event, out handlers);
             }
         }
 
-        Delegate TryGet(EventInfo @event)
+        Delegate? TryGet(EventInfo @event)
         {
             return this.eventHandlers.TryGetValue(@event, out var handlers) ? handlers : null;
         }

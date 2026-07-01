@@ -13,75 +13,12 @@ using Moq.Properties;
 
 namespace Moq.Protected
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    After:
-        sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    After:
-        sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    After:
-        sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
-    */
     sealed class ProtectedAsMock<T, TAnalog> : IProtectedAsMock<T, TAnalog>
         where T : class
         where TAnalog : class
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private Mock<T> mock;
-        After:
-                Mock<T> mock;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private Mock<T> mock;
-        After:
-                Mock<T> mock;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private Mock<T> mock;
-        After:
-                Mock<T> mock;
-        */
     {
         Mock<T> mock;
 
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        After:
-                static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        After:
-                static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        After:
-                static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
-        */
         static DuckReplacer DuckReplacerInstance = new DuckReplacer(typeof(TAnalog), typeof(T));
 
         public ProtectedAsMock(Mock<T> mock)
@@ -163,7 +100,7 @@ namespace Moq.Protected
             return new NonVoidSetupPhrase<T, TProperty>(setup);
         }
 
-        public Mock<T> SetupProperty<TProperty>(Expression<Func<TAnalog, TProperty>> expression, TProperty initialValue = default(TProperty))
+        public Mock<T> SetupProperty<TProperty>(Expression<Func<TAnalog, TProperty>> expression, TProperty? initialValue = default(TProperty))
         {
             Guard.NotNull(expression, nameof(expression));
 
@@ -216,7 +153,7 @@ namespace Moq.Protected
             return new SetupSequencePhrase(setup);
         }
 
-        public void Verify(Expression<Action<TAnalog>> expression, Times? times = null, string failMessage = null)
+        public void Verify(Expression<Action<TAnalog>> expression, Times? times = null, string? failMessage = null)
         {
             Guard.NotNull(expression, nameof(expression));
 
@@ -233,7 +170,7 @@ namespace Moq.Protected
             Mock.Verify(this.mock, rewrittenExpression, times ?? Times.AtLeastOnce(), failMessage);
         }
 
-        public void Verify<TResult>(Expression<Func<TAnalog, TResult>> expression, Times? times = null, string failMessage = null)
+        public void Verify<TResult>(Expression<Func<TAnalog, TResult>> expression, Times? times = null, string? failMessage = null)
         {
             Guard.NotNull(expression, nameof(expression));
 
@@ -250,7 +187,7 @@ namespace Moq.Protected
             Mock.Verify(this.mock, rewrittenExpression, times ?? Times.AtLeastOnce(), failMessage);
         }
 
-        public void VerifySet(Action<TAnalog> setterExpression, Times? times = null, string failMessage = null)
+        public void VerifySet(Action<TAnalog> setterExpression, Times? times = null, string? failMessage = null)
         {
             Guard.NotNull(setterExpression, nameof(setterExpression));
 
@@ -258,7 +195,7 @@ namespace Moq.Protected
             Mock.VerifySet(mock, rewrittenExpression, times.HasValue ? times.Value : Times.AtLeastOnce(), failMessage);
         }
 
-        public void VerifyGet<TProperty>(Expression<Func<TAnalog, TProperty>> expression, Times? times = null, string failMessage = null)
+        public void VerifyGet<TProperty>(Expression<Func<TAnalog, TProperty>> expression, Times? times = null, string? failMessage = null)
         {
             Guard.NotNull(expression, nameof(expression));
 
@@ -273,54 +210,12 @@ namespace Moq.Protected
             }
 
             Mock.VerifyGet(this.mock, rewrittenExpression, times ?? Times.AtLeastOnce(), failMessage);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            After:
-                    LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            After:
-                    LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            After:
-                    LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
-            */
         }
 
         LambdaExpression ReconstructAndReplaceSetter(Action<TAnalog> setterExpression)
         {
             var expression = ExpressionReconstructor.Instance.ReconstructExpression(setterExpression, mock.ConstructorArguments);
             return ReplaceDuck(expression);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            After:
-                    static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            After:
-                    static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            After:
-                    static LambdaExpression ReplaceDuck(LambdaExpression expression)
-            */
         }
 
         static LambdaExpression ReplaceDuck(LambdaExpression expression)
@@ -329,60 +224,12 @@ namespace Moq.Protected
 
             var targetParameter = Expression.Parameter(typeof(T), expression.Parameters[0].Name);
             return Expression.Lambda(DuckReplacerInstance.Visit(expression.Body), targetParameter);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private sealed class DuckReplacer : ExpressionVisitor
-            After:
-                    sealed class DuckReplacer : ExpressionVisitor
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private sealed class DuckReplacer : ExpressionVisitor
-            After:
-                    sealed class DuckReplacer : ExpressionVisitor
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private sealed class DuckReplacer : ExpressionVisitor
-            After:
-                    sealed class DuckReplacer : ExpressionVisitor
-            */
         }
 
         /// <summary>
         /// <see cref="ExpressionVisitor"/> used to replace occurrences of `TAnalog.Member` sub-expressions with `T.Member`.
         /// </summary>
         sealed class DuckReplacer : ExpressionVisitor
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private Type duckType;
-                    private Type targetType;
-        After:
-                    Type duckType;
-                    Type targetType;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private Type duckType;
-                    private Type targetType;
-        After:
-                    Type duckType;
-                    Type targetType;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private Type duckType;
-                    private Type targetType;
-        After:
-                    Type duckType;
-                    Type targetType;
-        */
         {
             Type duckType;
             Type targetType;
@@ -426,27 +273,6 @@ namespace Moq.Protected
                 else
                 {
                     return base.VisitMember(node);
-
-                    /* Unmerged change from project 'Moq(netstandard2.0)'
-                    Before:
-                                private MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    After:
-                                MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    */
-
-                    /* Unmerged change from project 'Moq(netstandard2.1)'
-                    Before:
-                                private MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    After:
-                                MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    */
-
-                    /* Unmerged change from project 'Moq(net6.0)'
-                    Before:
-                                private MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    After:
-                                MemberInfo FindCorrespondingMember(MemberInfo duckMember)
-                    */
                 }
             }
 
@@ -463,27 +289,6 @@ namespace Moq.Protected
                 else
                 {
                     throw new NotSupportedException();
-
-                    /* Unmerged change from project 'Moq(netstandard2.0)'
-                    Before:
-                                private MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    After:
-                                MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    */
-
-                    /* Unmerged change from project 'Moq(netstandard2.1)'
-                    Before:
-                                private MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    After:
-                                MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    */
-
-                    /* Unmerged change from project 'Moq(net6.0)'
-                    Before:
-                                private MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    After:
-                                MethodInfo FindCorrespondingMethod(MethodInfo duckMethod)
-                    */
                 }
             }
 
@@ -511,27 +316,6 @@ namespace Moq.Protected
                 }
 
                 return targetMethod;
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                            private PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                After:
-                            PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                            private PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                After:
-                            PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                            private PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                After:
-                            PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
-                */
             }
 
             PropertyInfo FindCorrespondingProperty(PropertyInfo duckProperty)
@@ -550,27 +334,6 @@ namespace Moq.Protected
                 Debug.Assert(candidateTargetProperties.Length == 1);
 
                 return candidateTargetProperties[0];
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                            private static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                After:
-                            static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                            private static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                After:
-                            static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                            private static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                After:
-                            static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
-                */
             }
 
             static bool IsCorrespondingMethod(MethodInfo duckMethod, MethodInfo candidateTargetMethod)
@@ -630,27 +393,6 @@ namespace Moq.Protected
                 }
 
                 return true;
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                            private static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                After:
-                            static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                            private static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                After:
-                            static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                            private static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                After:
-                            static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)
-                */
             }
 
             static bool IsCorrespondingProperty(PropertyInfo duckProperty, PropertyInfo candidateTargetProperty)

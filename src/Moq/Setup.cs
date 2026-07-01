@@ -12,74 +12,14 @@ using Moq.Async;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal abstract class Setup : ISetup
-    After:
-        abstract class Setup : ISetup
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal abstract class Setup : ISetup
-    After:
-        abstract class Setup : ISetup
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal abstract class Setup : ISetup
-    After:
-        abstract class Setup : ISetup
-    */
     abstract class Setup : ISetup
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private readonly Expectation expectation;
-            private readonly Expression originalExpression;
-            private readonly Mock mock;
-            private Flags flags;
-    After:
-            readonly Expectation expectation;
-            readonly Expression originalExpression;
-            readonly Mock mock;
-            Flags flags;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private readonly Expectation expectation;
-            private readonly Expression originalExpression;
-            private readonly Mock mock;
-            private Flags flags;
-    After:
-            readonly Expectation expectation;
-            readonly Expression originalExpression;
-            readonly Mock mock;
-            Flags flags;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private readonly Expectation expectation;
-            private readonly Expression originalExpression;
-            private readonly Mock mock;
-            private Flags flags;
-    After:
-            readonly Expectation expectation;
-            readonly Expression originalExpression;
-            readonly Mock mock;
-            Flags flags;
-    */
     {
         readonly Expectation expectation;
-        readonly Expression originalExpression;
+        readonly Expression? originalExpression;
         readonly Mock mock;
         Flags flags;
 
-        protected Setup(Expression originalExpression, Mock mock, Expectation expectation)
+        protected Setup(Expression? originalExpression, Mock mock, Expectation expectation)
         {
             Debug.Assert(mock != null);
             Debug.Assert(expectation != null);
@@ -89,13 +29,13 @@ namespace Moq
             this.mock = mock;
         }
 
-        public virtual Condition Condition => null;
+        public virtual Condition? Condition => null;
 
         public Expectation Expectation => this.expectation;
 
         public LambdaExpression Expression => this.expectation.Expression;
 
-        Mock ISetup.InnerMock => this.InnerMocks.SingleOrDefault();
+        Mock? ISetup.InnerMock => this.InnerMocks.SingleOrDefault();
 
         public virtual IEnumerable<Mock> InnerMocks => Enumerable.Empty<Mock>();
 
@@ -107,7 +47,7 @@ namespace Moq
 
         public Mock Mock => this.mock;
 
-        public Expression OriginalExpression => this.originalExpression;
+        public Expression? OriginalExpression => this.originalExpression;
 
         public bool IsMatched => (this.flags & Flags.Matched) != 0;
 
@@ -250,27 +190,6 @@ namespace Moq
         public void VerifyAll()
         {
             this.Verify(recursive: true, setup => true);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private void Verify(bool recursive, Func<ISetup, bool> predicate)
-            After:
-                    void Verify(bool recursive, Func<ISetup, bool> predicate)
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private void Verify(bool recursive, Func<ISetup, bool> predicate)
-            After:
-                    void Verify(bool recursive, Func<ISetup, bool> predicate)
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private void Verify(bool recursive, Func<ISetup, bool> predicate)
-            After:
-                    void Verify(bool recursive, Func<ISetup, bool> predicate)
-            */
         }
 
         void Verify(bool recursive, Func<ISetup, bool> predicate)
@@ -285,7 +204,7 @@ namespace Moq
             this.Verify(recursive, predicate, verifiedMocks);
         }
 
-        protected static Mock TryGetInnerMockFrom(object returnValue)
+        protected static Mock? TryGetInnerMockFrom(object? returnValue)
         {
             return (Awaitable.TryGetResultRecursive(returnValue) as IMocked)?.Mock;
         }

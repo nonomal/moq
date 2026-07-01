@@ -2,11 +2,11 @@
 // All rights reserved. Licensed under the BSD 3-Clause License; see License.txt.
 
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
 
 #if FEATURE_DEFAULT_INTERFACE_IMPLEMENTATIONS
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
@@ -21,70 +21,30 @@ using Moq.Properties;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class CastleProxyFactory : ProxyFactory
-    After:
-        sealed class CastleProxyFactory : ProxyFactory
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class CastleProxyFactory : ProxyFactory
-    After:
-        sealed class CastleProxyFactory : ProxyFactory
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class CastleProxyFactory : ProxyFactory
-    After:
-        sealed class CastleProxyFactory : ProxyFactory
-    */
     /// <summary>
     /// An implementation of <see cref="ProxyFactory"/> that is based on Castle DynamicProxy.
     /// </summary>
     sealed class CastleProxyFactory : ProxyFactory
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-            private ProxyGenerationOptions generationOptions;
-            private ProxyGenerator generator;
-    After:
-            ProxyGenerationOptions generationOptions;
-            ProxyGenerator generator;
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-            private ProxyGenerationOptions generationOptions;
-            private ProxyGenerator generator;
-    After:
-            ProxyGenerationOptions generationOptions;
-            ProxyGenerator generator;
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-            private ProxyGenerationOptions generationOptions;
-            private ProxyGenerator generator;
-    After:
-            ProxyGenerationOptions generationOptions;
-            ProxyGenerator generator;
-    */
     {
         ProxyGenerationOptions generationOptions;
         ProxyGenerator generator;
+        ConcurrentDictionary<string, ProxyGenerator> classGenerators;
 
         public CastleProxyFactory()
         {
             this.generationOptions = new ProxyGenerationOptions { Hook = new IncludeObjectMethodsHook(), BaseTypeForInterfaceProxy = typeof(InterfaceProxy) };
             this.generator = new ProxyGenerator();
+            this.classGenerators = new ConcurrentDictionary<string, ProxyGenerator>();
+        }
+
+        ProxyGenerator GetClassGenerator(Type mockType)
+        {
+            var ns = mockType.Namespace ?? string.Empty;
+            return classGenerators.GetOrAdd(ns, _ => new ProxyGenerator());
         }
 
         /// <inheritdoc />
-        public override object CreateProxy(Type mockType, Moq.IInterceptor interceptor, Type[] interfaces, object[] arguments)
+        public override object CreateProxy(Type mockType, Moq.IInterceptor interceptor, Type[] interfaces, object?[] arguments)
         {
             // All generated proxies need to implement `IProxy`:
             var additionalInterfaces = new Type[1 + interfaces.Length];
@@ -101,13 +61,13 @@ namespace Moq
             {
                 var options = new ProxyGenerationOptions();
                 options.AddDelegateTypeMixin(mockType);
-                var container = generator.CreateClassProxy(typeof(object), additionalInterfaces, options, new Interceptor(interceptor));
-                return Delegate.CreateDelegate(mockType, container, container.GetType().GetMethod("Invoke"));
+                var container = GetClassGenerator(mockType).CreateClassProxy(typeof(object), additionalInterfaces, options, new Interceptor(interceptor));
+                return Delegate.CreateDelegate(mockType, container, container.GetType().GetMethod("Invoke")!);
             }
 
             try
             {
-                return generator.CreateClassProxy(mockType, additionalInterfaces, this.generationOptions, arguments, new Interceptor(interceptor));
+                return GetClassGenerator(mockType).CreateClassProxy(mockType, additionalInterfaces, this.generationOptions, arguments, new Interceptor(interceptor));
             }
             catch (TypeLoadException e)
             {
@@ -127,75 +87,12 @@ namespace Moq
         public override bool IsTypeVisible(Type type)
         {
             return ProxyUtil.IsAccessible(type);
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            After:
-                    sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            After:
-                    sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            After:
-                    sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-            */
         }
 
         sealed class Interceptor : Castle.DynamicProxy.IInterceptor
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        After:
-                    static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        After:
-                    static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        After:
-                    static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
-        */
         {
-            static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor)).GetMethod;
+            static readonly MethodInfo proxyInterceptorGetter = typeof(IProxy).GetProperty(nameof(IProxy.Interceptor))!.GetMethod!;
 
-
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                        private Moq.IInterceptor interceptor;
-            After:
-                        Moq.IInterceptor interceptor;
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                        private Moq.IInterceptor interceptor;
-            After:
-                        Moq.IInterceptor interceptor;
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                        private Moq.IInterceptor interceptor;
-            After:
-                        Moq.IInterceptor interceptor;
-            */
             Moq.IInterceptor interceptor;
 
             internal Interceptor(Moq.IInterceptor interceptor)
@@ -226,55 +123,13 @@ namespace Moq
                 finally
                 {
                     invocation.DetachFromUnderlying();
-
-                    /* Unmerged change from project 'Moq(netstandard2.0)'
-                    Before:
-                            private sealed class Invocation : Moq.Invocation
-                    After:
-                            sealed class Invocation : Moq.Invocation
-                    */
-
-                    /* Unmerged change from project 'Moq(netstandard2.1)'
-                    Before:
-                            private sealed class Invocation : Moq.Invocation
-                    After:
-                            sealed class Invocation : Moq.Invocation
-                    */
-
-                    /* Unmerged change from project 'Moq(net6.0)'
-                    Before:
-                            private sealed class Invocation : Moq.Invocation
-                    After:
-                            sealed class Invocation : Moq.Invocation
-                    */
                 }
             }
         }
 
         sealed class Invocation : Moq.Invocation
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private Castle.DynamicProxy.IInvocation underlying;
-        After:
-                    Castle.DynamicProxy.IInvocation underlying;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private Castle.DynamicProxy.IInvocation underlying;
-        After:
-                    Castle.DynamicProxy.IInvocation underlying;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private Castle.DynamicProxy.IInvocation underlying;
-        After:
-                    Castle.DynamicProxy.IInvocation underlying;
-        */
         {
-            Castle.DynamicProxy.IInvocation underlying;
+            Castle.DynamicProxy.IInvocation? underlying;
 
             internal Invocation(Castle.DynamicProxy.IInvocation underlying) : base(underlying.Proxy.GetType(), underlying.Method, underlying.Arguments)
             {
@@ -287,7 +142,7 @@ namespace Moq
 
 #if FEATURE_DEFAULT_INTERFACE_IMPLEMENTATIONS
 				var method = this.Method;
-				if (method.DeclaringType.IsInterface && !method.IsAbstract)
+				if (method.DeclaringType!.IsInterface && !method.IsAbstract)
 				{
 					// As of version 4.4.0, DynamicProxy cannot proceed to default method implementations of interfaces.
 					// we need to find and call those manually.
@@ -303,45 +158,6 @@ namespace Moq
             public void DetachFromUnderlying()
             {
                 this.underlying = null;
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private static ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo> mostSpecificOverrides;
-                        private static ConcurrentDictionary<MethodInfo, Func<object, object[], object>> nonVirtualInvocationThunks;
-                After:
-                        static ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo> mostSpecificOverrides;
-                        static ConcurrentDictionary<MethodInfo, Func<object, object[], object>> nonVirtualInvocationThunks;
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private static ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo> mostSpecificOverrides;
-                        private static ConcurrentDictionary<MethodInfo, Func<object, object[], object>> nonVirtualInvocationThunks;
-                After:
-                        static ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo> mostSpecificOverrides;
-                        static ConcurrentDictionary<MethodInfo, Func<object, object[], object>> nonVirtualInvocationThunks;
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private sealed class IncludeObjectMethodsHook : AllMethodsHook
-                After:
-                        sealed class IncludeObjectMethodsHook : AllMethodsHook
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private sealed class IncludeObjectMethodsHook : AllMethodsHook
-                After:
-                        sealed class IncludeObjectMethodsHook : AllMethodsHook
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private sealed class IncludeObjectMethodsHook : AllMethodsHook
-                After:
-                        sealed class IncludeObjectMethodsHook : AllMethodsHook
-                */
             }
         }
 
@@ -349,12 +165,12 @@ namespace Moq
 		// Finding and calling default interface implementations currently involves a lot of reflection,
 		// we are using two caches to speed up these operations for repeated calls.
 		static ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo> mostSpecificOverrides;
-		static ConcurrentDictionary<MethodInfo, Func<object, object[], object>> nonVirtualInvocationThunks;
+		static ConcurrentDictionary<MethodInfo, Func<object, object?[], object>> nonVirtualInvocationThunks;
 
 		static CastleProxyFactory()
 		{
 			mostSpecificOverrides = new ConcurrentDictionary<Pair<MethodInfo, Type>, MethodInfo>();
-			nonVirtualInvocationThunks = new ConcurrentDictionary<MethodInfo, Func<object, object[], object>>();
+			nonVirtualInvocationThunks = new ConcurrentDictionary<MethodInfo, Func<object, object?[], object>>();
 		}
 
 		/// <summary>
@@ -373,7 +189,7 @@ namespace Moq
 				var genericParameterCount = declaration.IsGenericMethod ? declaration.GetGenericArguments().Length : 0;
 				var returnType = declaration.ReturnType;
 				var parameterTypes = declaration.GetParameterTypes().ToArray();
-				var declaringType = declaration.DeclaringType;
+				var declaringType = declaration.DeclaringType!;
 
 				// If the base class has a method implementation, then by rule (2) it will be more specific
 				// than any candidate method from an implemented interface:
@@ -416,7 +232,7 @@ namespace Moq
 
 					// No, it is the most specific override so far. Add it to the list, but before doing so,
 					// remove all less specific overrides from it:
-					candidateMethods.ExceptWith(candidateMethods.Where(cm => cm.DeclaringType.IsAssignableFrom(implementedInterface)).ToArray());
+					candidateMethods.ExceptWith(candidateMethods.Where(cm => cm.DeclaringType!.IsAssignableFrom(implementedInterface)).ToArray());
 					candidateMethods.Add(candidateMethod);
 				}
 
@@ -440,7 +256,7 @@ namespace Moq
 		///   Performs a non-virtual (non-polymorphic) call to the given <paramref name="method"/>
 		///   using the specified object <paramref name="instance"/> and <paramref name="arguments"/>.
 		/// </summary>
-		public static object DynamicInvokeNonVirtually(MethodInfo method, object instance, object[] arguments)
+		public static object DynamicInvokeNonVirtually(MethodInfo method, object instance, object?[] arguments)
 		{
 			// There are a couple of probable alternatives to the following implementation that
 			// unfortunately don't work in practice:
@@ -477,7 +293,7 @@ namespace Moq
 				{
 					if (parameterTypes[i].IsByRef)
 					{
-						parameterTypes[i] = parameterTypes[i].GetElementType();
+						parameterTypes[i] = parameterTypes[i].GetElementType()!;
 					}
 				}
 
@@ -504,7 +320,7 @@ namespace Moq
 
 				// Perform the actual call.
 				il.Emit(OpCodes.Ldarg_0);
-				il.Emit(OpCodes.Castclass, method.DeclaringType);
+				il.Emit(OpCodes.Castclass, method.DeclaringType!);
 				for (var i = 0; i < n; ++i)
 				{
 					il.Emit(originalParameterTypes[i].IsByRef ? OpCodes.Ldloca : OpCodes.Ldloc, arguments[i]);
@@ -539,7 +355,7 @@ namespace Moq
 				il.Emit(OpCodes.Ldloc, returnValue);
 				il.Emit(OpCodes.Ret);
 
-				return (Func<object, object[], object>)dynamicMethod.CreateDelegate(typeof(Func<object, object[], object>));
+				return (Func<object, object?[], object>)dynamicMethod.CreateDelegate(typeof(Func<object, object?[], object>));
 			});
 
 			return thunk.Invoke(instance, arguments);
@@ -556,27 +372,6 @@ namespace Moq
             public override bool ShouldInterceptMethod(Type type, MethodInfo method)
             {
                 return base.ShouldInterceptMethod(type, method) || IsRelevantObjectMethod(method);
-
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                            private static bool IsRelevantObjectMethod(MethodInfo method)
-                After:
-                            static bool IsRelevantObjectMethod(MethodInfo method)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                            private static bool IsRelevantObjectMethod(MethodInfo method)
-                After:
-                            static bool IsRelevantObjectMethod(MethodInfo method)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                            private static bool IsRelevantObjectMethod(MethodInfo method)
-                After:
-                            static bool IsRelevantObjectMethod(MethodInfo method)
-                */
             }
 
             static bool IsRelevantObjectMethod(MethodInfo method)

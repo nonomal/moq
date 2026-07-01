@@ -6,27 +6,6 @@ using System.Diagnostics;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    After:
-        sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    After:
-        sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    After:
-        sealed class MockDefaultValueProvider : LookupOrFallbackDefaultValueProvider
-    */
     /// <summary>
     /// A <see cref="DefaultValueProvider"/> that returns an empty default value 
     /// for non-mockable types, and mocks for all other types (interfaces and
@@ -40,7 +19,7 @@ namespace Moq
 
         internal override DefaultValue Kind => DefaultValue.Mock;
 
-        protected override object GetFallbackDefaultValue(Type type, Mock mock)
+        protected override object? GetFallbackDefaultValue(Type type, Mock mock)
         {
             Debug.Assert(type != null);
             Debug.Assert(type != typeof(void));
@@ -55,7 +34,7 @@ namespace Moq
             {
                 // Create a new mock to be placed to InnerMocks dictionary if it's missing there
                 var mockType = typeof(Mock<>).MakeGenericType(type);
-                Mock newMock = (Mock)Activator.CreateInstance(mockType, mock.Behavior);
+                Mock newMock = (Mock)Activator.CreateInstance(mockType, mock.Behavior)!;
                 newMock.DefaultValueProvider = mock.DefaultValueProvider;
                 if (mock.MutableSetups.FindLast(s => s is StubbedPropertiesSetup) is StubbedPropertiesSetup sts)
                 {

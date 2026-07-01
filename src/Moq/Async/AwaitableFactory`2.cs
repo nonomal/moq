@@ -4,47 +4,29 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace Moq.Async
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    After:
-        abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
-    */
     /// <summary>
     ///   Abstract base class that facilitates type-safe implementation of <see cref="IAwaitableFactory"/>
     ///   for awaitables that produce a result when awaited.
     /// </summary>
     abstract class AwaitableFactory<TAwaitable, TResult> : IAwaitableFactory
+        where TAwaitable : notnull
     {
         public Type ResultType => typeof(TResult);
 
         public abstract TAwaitable CreateCompleted(TResult result);
 
-        object IAwaitableFactory.CreateCompleted(object result)
+        object IAwaitableFactory.CreateCompleted(object? result)
         {
+            // TODO: result should only be null if TResult is a nullable type.
             Debug.Assert(result is TResult || result == null);
 
-            return this.CreateCompleted((TResult)result);
+            return this.CreateCompleted((TResult)result!);
         }
 
         public abstract TAwaitable CreateFaulted(Exception exception);
@@ -66,11 +48,15 @@ namespace Moq.Async
             return this.CreateFaulted(exceptions);
         }
 
+#if NULLABLE_REFERENCE_TYPES
+        public abstract bool TryGetResult(TAwaitable awaitable, [MaybeNullWhen(false)] out TResult result);
+#else
         public abstract bool TryGetResult(TAwaitable awaitable, out TResult result);
+#endif
 
         public abstract Expression CreateResultExpression(Expression awaitableExpression);
 
-        bool IAwaitableFactory.TryGetResult(object awaitable, out object result)
+        bool IAwaitableFactory.TryGetResult(object awaitable, out object? result)
         {
             Debug.Assert(awaitable is TAwaitable);
 

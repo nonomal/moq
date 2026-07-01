@@ -103,27 +103,6 @@ namespace Moq
         List<Mock> mocks = new List<Mock>();
         MockBehavior defaultBehavior;
         DefaultValueProvider defaultValueProvider;
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                private Switches switches;
-        After:
-                Switches switches;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                private Switches switches;
-        After:
-                Switches switches;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                private Switches switches;
-        After:
-                Switches switches;
-        */
         Switches switches;
 
         /// <summary>
@@ -243,7 +222,7 @@ namespace Moq
         /// factory.Verify();
         /// </code>
         /// </example>
-        public Mock<T> Create<T>(params object[] args)
+        public Mock<T> Create<T>(params object[]? args)
             where T : class
         {
             // "fix" compiler picking this overload instead of 
@@ -335,7 +314,7 @@ namespace Moq
         /// <typeparam name="T">Type to mock.</typeparam>
         /// <param name="behavior">The behavior for the new mock.</param>
         /// <param name="args">Optional arguments for the construction of the mock.</param>
-        protected virtual Mock<T> CreateMock<T>(MockBehavior behavior, object[] args)
+        protected virtual Mock<T> CreateMock<T>(MockBehavior behavior, object[]? args)
             where T : class
         {
             var mock = new Mock<T>(behavior, args);

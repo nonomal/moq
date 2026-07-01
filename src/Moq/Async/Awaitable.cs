@@ -3,27 +3,6 @@
 
 namespace Moq.Async
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal static class Awaitable
-    After:
-        static class Awaitable
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal static class Awaitable
-    After:
-        static class Awaitable
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal static class Awaitable
-    After:
-        static class Awaitable
-    */
     static class Awaitable
     {
         /// <summary>
@@ -35,7 +14,7 @@ namespace Moq.Async
         ///   this method will return <c>42</c>.
         /// </remarks>
         /// <param name="obj">The (possibly awaitable) object to be "unwrapped".</param>
-        public static object TryGetResultRecursive(object obj)
+        public static object? TryGetResultRecursive(object? obj)
         {
             if (obj != null
                 && AwaitableFactory.TryGet(obj.GetType()) is { } awaitableFactory

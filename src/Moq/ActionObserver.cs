@@ -18,27 +18,6 @@ using TypeNameFormatter;
 
 namespace Moq
 {
-
-    /* Unmerged change from project 'Moq(netstandard2.0)'
-    Before:
-        internal sealed class ActionObserver : ExpressionReconstructor
-    After:
-        sealed class ActionObserver : ExpressionReconstructor
-    */
-
-    /* Unmerged change from project 'Moq(netstandard2.1)'
-    Before:
-        internal sealed class ActionObserver : ExpressionReconstructor
-    After:
-        sealed class ActionObserver : ExpressionReconstructor
-    */
-
-    /* Unmerged change from project 'Moq(net6.0)'
-    Before:
-        internal sealed class ActionObserver : ExpressionReconstructor
-    After:
-        sealed class ActionObserver : ExpressionReconstructor
-    */
     /// <summary>
     ///   <see cref="ActionObserver"/> is a kind of <see cref="ExpressionReconstructor"/> that works by
     ///   applying a <see cref="Action{T}"/> delegate to a light-weight proxy that records the invocation
@@ -48,14 +27,14 @@ namespace Moq
     /// </summary>
     sealed class ActionObserver : ExpressionReconstructor
     {
-        public override Expression<Action<T>> ReconstructExpression<T>(Action<T> action, object[] ctorArgs = null)
+        public override Expression<Action<T>> ReconstructExpression<T>(Action<T> action, object?[]? ctorArgs = null)
         {
             using (var matcherObserver = MatcherObserver.Activate())
             {
                 // Create the root recording proxy:
                 var root = (T)CreateProxy(typeof(T), ctorArgs, matcherObserver, out var rootRecorder);
 
-                Exception error = null;
+                Exception? error = null;
                 try
                 {
                     // Execute the delegate. The root recorder will automatically "mock" return values
@@ -82,7 +61,7 @@ namespace Moq
                     var invocation = recorder.Invocation;
                     if (invocation != null)
                     {
-                        var resultType = invocation.Method.DeclaringType;
+                        var resultType = invocation.Method.DeclaringType!;
                         if (resultType.IsAssignableFrom(body.Type) == false)
                         {
                             if (AwaitableFactory.TryGet(body.Type) is { } awaitableHandler
@@ -149,7 +128,7 @@ namespace Moq
                         // it will have left behind a `default(T)` argument, possibly coerced to the parameter type.
                         // Therefore, we attempt to reproduce such coercions using `Convert.ChangeType`:
                         Type defaultValueType = matches[matchIndex].RenderExpression.Type;
-                        object defaultValue = defaultValueType.GetDefaultValue();
+                        object? defaultValue = defaultValueType.GetDefaultValue();
                         try
                         {
                             defaultValue = Convert.ChangeType(defaultValue, parameterTypes[argumentIndex]);
@@ -199,7 +178,7 @@ namespace Moq
                                 CultureInfo.CurrentCulture,
                                 Resources.MatcherAssignmentFailedDuringExpressionReconstruction,
                                 matches.Length,
-                                $"{invocation.Method.DeclaringType.GetFormattedName()}.{invocation.Method.Name}"));
+                                $"{invocation.Method.DeclaringType!.GetFormattedName()}.{invocation.Method.Name}"));
                     }
 
                     bool CanDistribute(int msi, int asi)
@@ -245,111 +224,26 @@ namespace Moq
 
                 return expressions;
 
-                /* Unmerged change from project 'Moq(netstandard2.0)'
-                Before:
-                        private static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                After:
-                        static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                */
-
-                /* Unmerged change from project 'Moq(netstandard2.1)'
-                Before:
-                        private static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                After:
-                        static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                */
-
-                /* Unmerged change from project 'Moq(net6.0)'
-                Before:
-                        private static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                After:
-                        static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
-                */
             }
         }
 
         // Creates a proxy (way more light-weight than a `Mock<T>`!) with an invocation `Recorder` attached to it.
-        static IProxy CreateProxy(Type type, object[] ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
+        static IProxy CreateProxy(Type type, object?[]? ctorArgs, MatcherObserver matcherObserver, out Recorder recorder)
         {
             recorder = new Recorder(matcherObserver);
-            return (IProxy)ProxyFactory.Instance.CreateProxy(type, recorder, Type.EmptyTypes, ctorArgs ?? new object[0]);
+            return (IProxy)ProxyFactory.Instance.CreateProxy(type, recorder, Type.EmptyTypes, ctorArgs ?? new object?[0]);
 
-            /* Unmerged change from project 'Moq(netstandard2.0)'
-            Before:
-                    private sealed class Recorder : IInterceptor
-            After:
-                    sealed class Recorder : IInterceptor
-            */
-
-            /* Unmerged change from project 'Moq(netstandard2.1)'
-            Before:
-                    private sealed class Recorder : IInterceptor
-            After:
-                    sealed class Recorder : IInterceptor
-            */
-
-            /* Unmerged change from project 'Moq(net6.0)'
-            Before:
-                    private sealed class Recorder : IInterceptor
-            After:
-                    sealed class Recorder : IInterceptor
-            */
         }
 
         // Records an invocation, mocks return values, and builds a chain to the return value's recorder.
         // This record represents the basis for reconstructing an expression tree.
         sealed class Recorder : IInterceptor
-
-        /* Unmerged change from project 'Moq(netstandard2.0)'
-        Before:
-                    private readonly MatcherObserver matcherObserver;
-                    private int creationTimestamp;
-                    private Invocation invocation;
-                    private int invocationTimestamp;
-                    private object returnValue;
-        After:
-                    readonly MatcherObserver matcherObserver;
-                    int creationTimestamp;
-                    Invocation invocation;
-                    int invocationTimestamp;
-                    object returnValue;
-        */
-
-        /* Unmerged change from project 'Moq(netstandard2.1)'
-        Before:
-                    private readonly MatcherObserver matcherObserver;
-                    private int creationTimestamp;
-                    private Invocation invocation;
-                    private int invocationTimestamp;
-                    private object returnValue;
-        After:
-                    readonly MatcherObserver matcherObserver;
-                    int creationTimestamp;
-                    Invocation invocation;
-                    int invocationTimestamp;
-                    object returnValue;
-        */
-
-        /* Unmerged change from project 'Moq(net6.0)'
-        Before:
-                    private readonly MatcherObserver matcherObserver;
-                    private int creationTimestamp;
-                    private Invocation invocation;
-                    private int invocationTimestamp;
-                    private object returnValue;
-        After:
-                    readonly MatcherObserver matcherObserver;
-                    int creationTimestamp;
-                    Invocation invocation;
-                    int invocationTimestamp;
-                    object returnValue;
-        */
         {
             readonly MatcherObserver matcherObserver;
             int creationTimestamp;
-            Invocation invocation;
+            Invocation? invocation;
             int invocationTimestamp;
-            object returnValue;
+            object? returnValue;
 
             public Recorder(MatcherObserver matcherObserver)
             {
@@ -359,7 +253,7 @@ namespace Moq
                 this.creationTimestamp = this.matcherObserver.GetNextTimestamp();
             }
 
-            public Invocation Invocation => this.invocation;
+            public Invocation? Invocation => this.invocation;
 
             public IEnumerable<Match> Matches
             {
@@ -370,7 +264,7 @@ namespace Moq
                 }
             }
 
-            public Recorder Next => (Awaitable.TryGetResultRecursive(this.returnValue) as IProxy)?.Interceptor as Recorder;
+            public Recorder? Next => (Awaitable.TryGetResultRecursive(this.returnValue) as IProxy)?.Interceptor as Recorder;
 
             public void Intercept(Invocation invocation)
             {

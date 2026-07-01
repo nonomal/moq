@@ -6,11 +6,13 @@
 		<NoWarn>$(NoWarn);0419;CS8032</NoWarn>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<WarningLevel>4</WarningLevel>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>Latest</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' Or '$(TargetFramework)' == 'net6.0' ">
-		<DefineConstants>$(DefineConstants);FEATURE_DEFAULT_INTERFACE_IMPLEMENTATIONS</DefineConstants>
+		<DefineConstants>$(DefineConstants);NULLABLE_REFERENCE_TYPES;FEATURE_DEFAULT_INTERFACE_IMPLEMENTATIONS</DefineConstants>
+    <Nullable>enable</Nullable>
+    <WarningsNotAsErrors>nullable</WarningsNotAsErrors>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -32,16 +34,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Castle.Core" Version="5.1.1" />
+		<PackageReference Include="Castle.Core" Version="5.2.1" />
 		<PackageReference Include="IFluentInterface" Version="2.1.0" PrivateAssets="All" />
 		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="All" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-		<PackageReference Include="NuGetizer" Version="1.2.0" />
-		<PackageReference Include="TypeNameFormatter.Sources" Version="1.1.1" PrivateAssets="All" />
+		<PackageReference Include="NuGetizer" Version="1.4.9" />
+		<PackageReference Include="TypeNameFormatter.Sources" Version="1.1.2" PrivateAssets="All" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net462' Or '$(TargetFramework)' == 'netstandard2.0' ">
-		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+		<PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
 	</ItemGroup>
 
 	<ItemGroup>
